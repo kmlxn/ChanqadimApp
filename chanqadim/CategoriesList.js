@@ -1,14 +1,15 @@
 import React, { Component } from "react"
 import { observer } from "mobx-react/native"
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ListView } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ListView, Image } from 'react-native'
 import { Actions } from 'react-native-router-flux';
 
 @observer
 class RenderRow extends Component {
   render() {
-    console.log('rendredrow', this.props);
-    return <View key={this.props.category.id} style={{flex: 1, flexDirection: 'row', margin: 5, borderTopWidth: 1, alignItems: 'center', width: 50, height: 50}}>
-      <Text style={{flex: 3}}>{this.props.category.name}</Text>
+    return <View style={styles.category}>
+      <Image style={{width: 80, height: 80}}
+        source={{uri: this.props.category.image}}/>
+      <Text>{this.props.category.name}</Text>
     </View>
   }
 }
@@ -19,6 +20,7 @@ export default class CategoriesList extends Component {
     super()
     this.dataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   }
+
   filter(text) {
     this.props.store.filter = text
   }
@@ -38,7 +40,7 @@ export default class CategoriesList extends Component {
   render() {
     const { clearComplete, filter, categories, dataSource } = this.props.store
 
-    return <View style={{marginTop: 55, flex: 1}}>
+    return <View style={styles.container}>
       <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', margin: 5}}>
         <TouchableOpacity style={{flex: 1}} onPress={() => this.onNewCategoryButtonSubmit()}>
           <Text style={{textAlign: 'center', fontSize: 30}}>+</Text>
@@ -54,10 +56,30 @@ export default class CategoriesList extends Component {
           onChangeText={text => this.filter(text)} />
       </View>
       <ListView
-        contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', flex: 1, width: 300}}
+        enableEmptySections
+        contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', flex: 1}}
         dataSource={dataSource}
         renderRow={this.renderRow.bind(this)}
       />
     </View>
   }
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    marginTop: 45,
+  },
+  category: {
+    flex: 1,
+    margin: 5,
+    borderWidth: 1,
+    alignItems: 'center',
+    width: 100,
+    height: 100,
+  },
+})
