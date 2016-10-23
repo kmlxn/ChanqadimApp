@@ -1,0 +1,3 @@
+rootProject.name = 'chanqadimv3'
+
+include ':app'
