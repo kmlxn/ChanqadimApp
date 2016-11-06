@@ -48,3 +48,8 @@ export function login(username, password) {
 export function getCategories() {
   return fetchJson('http://localhost:8000/categories/')
 }
+
+export function getBundles(categoryUrl) {
+  console.log('url', categoryUrl);
+  return fetchJson(categoryUrl)
+}

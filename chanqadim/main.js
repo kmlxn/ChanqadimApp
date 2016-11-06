@@ -4,6 +4,7 @@ import { observer } from "mobx-react/native"
 
 import CategoriesStore from "./CategoriesStore"
 import CategoriesList from "./CategoriesList"
+import BundlesList from "./BundlesList"
 
 import Login from './Login'
 
@@ -13,6 +14,7 @@ export default class Main extends Component {
       <Scene key="root">
         <Scene key="login" component={Login} title="Login" store={CategoriesStore} />
         <Scene initial={true} key="home" component={CategoriesList} title="Categories" store={CategoriesStore}/>
+        <Scene key="bundle" component={BundlesList} title="Bundles" store={CategoriesStore}/>
       </Scene>
     </Router>
   }
