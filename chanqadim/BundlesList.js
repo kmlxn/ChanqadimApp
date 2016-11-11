@@ -23,9 +23,12 @@ export default class BundlesList extends Component {
     return <RenderRow bundle={bundle} />
   }
 
+  componentDidMount() {
+    this.props.store.loadBundles(this.props.category)
+  }
+
   render() {
     console.log('categpry', this.props.category);
-    this.props.store.loadBundles(this.props.category)
     const {bundlesDataSource} = this.props.store
 
     return <View style={styles.container}>
