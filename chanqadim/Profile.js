@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { observer } from "mobx-react/native"
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ListView, Image } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity,
+  StyleSheet, ListView, Image, Dimensions } from 'react-native'
 
 @observer
 class RenderRow extends Component {
@@ -27,14 +28,22 @@ export default class UserProfile extends Component {
     this.props.store.loadUser()
   }
 
+  renderHeader(user) {
+    return <View style={styles.header}>
+      <Image style={styles.userImage}
+        source={{uri: user.image}}/>
+      <Text style={styles.userInfo}>{user.username}</Text>
+    </View>
+  }
+
   render() {
     const { user, userBundlesDataSource } = this.props.store
 
     return <View style={styles.container}>
-      <Text>{user.username}</Text>
       <ListView
         enableEmptySections
-        contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}
+        renderHeader={() => this.renderHeader(user)}
+        contentContainerStyle={styles.bundles}
         dataSource={userBundlesDataSource}
         renderRow={this.renderRow.bind(this)}
       />
@@ -60,4 +69,24 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
+  header: {
+    flexDirection: 'row',
+    height: 100,
+    width: Dimensions.get('window').width - 50,
+    alignItems: 'center',
+  },
+  userInfo: {
+    flex: 1,
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  userImage: {
+    width: 80,
+    height: 80,
+  },
+  bundles: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  }
 })
