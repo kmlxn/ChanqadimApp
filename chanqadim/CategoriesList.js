@@ -25,7 +25,7 @@ export default class CategoriesList extends Component {
   }
 
   onCategoryPress(category) {
-    Actions.bundle({category})
+    Actions.bundles({category})
   }
 
   render() {

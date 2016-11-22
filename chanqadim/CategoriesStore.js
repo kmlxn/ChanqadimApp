@@ -7,12 +7,14 @@ import * as dataManager from './dataManager'
 export class CategoryStore {
   @observable categories = []
   @observable bundles = []
+  @observable bundle = {}
   @observable user = {}
   @observable filter = ""
   @observable isLogged = true
   @observable errorMessage = false
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   bundlesDS = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+  bundleProductsDS = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   userBundlesDS = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
 
   @computed get dataSource() {
@@ -22,6 +24,11 @@ export class CategoryStore {
 
   @computed get bundlesDataSource() {
     return this.bundlesDS.cloneWithRows(this.bundles.slice());
+  }
+
+  @computed get bundleProductsDataSource() {
+    console.log('bundle', this.bundle);
+    return this.bundleProductsDS.cloneWithRows(this.bundle.products ? this.bundle.products.slice() : []);
   }
 
   @computed get userBundlesDataSource() {
@@ -49,6 +56,10 @@ export class CategoryStore {
 
   @action addBundles(bundles) {
     this.bundles = bundles
+  }
+
+  @action addBundle(bundle) {
+    this.bundle = bundle;
   }
 
   @action addUser(user) {
@@ -82,6 +93,15 @@ export class CategoryStore {
       this.logOut()
     else
       this.addBundles(data.bundles)
+  }
+
+  async loadBundle(bundle) {
+    const data = await dataManager.getBundles(bundle.url)
+    console.log('got data', data);
+    if (data === 'not authenticated' || data === 'access denied')
+      this.logOut()
+    else
+      this.addBundle(data)
   }
 
   async loadUser() {
