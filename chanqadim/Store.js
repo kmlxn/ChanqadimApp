@@ -4,7 +4,7 @@ import { ListView } from 'react-native'
 import * as dataManager from './dataManager'
 
 
-export class CategoryStore {
+export class Store {
   @observable categories = []
   @observable bundles = []
   @observable bundle = {}
@@ -113,4 +113,4 @@ export class CategoryStore {
   }
 }
 
-export default new CategoryStore
+export default new Store
