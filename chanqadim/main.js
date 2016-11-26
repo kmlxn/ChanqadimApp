@@ -3,7 +3,7 @@ import {Scene, Router} from 'react-native-router-flux';
 import { observer } from "mobx-react/native"
 import { Text } from 'react-native'
 
-import Store from './Store'
+import store from './store'
 import Categories from './screens/Categories'
 import Category from './screens/Category'
 import Bundle from './screens/Bundle'
@@ -19,13 +19,13 @@ export default class Main extends Component {
           tabBarSelectedItemStyle={{backgroundColor: 'red'}}
         >
           <Scene icon={() => <Text>H</Text>} key="browse" title="Browse">
-            <Scene initial={true} key="categories" component={Categories} title="Categories" store={Store}/>
-            <Scene key="category" component={Category} title="Category" store={Store}/>
-            <Scene key="bundle" component={Bundle} title="Bundle" store={Store}/>
+            <Scene initial={true} key="categories" component={Categories} title="Categories" store={store}/>
+            <Scene key="category" component={Category} title="Category" store={store}/>
+            <Scene key="bundle" component={Bundle} title="Bundle" store={store}/>
           </Scene>
-          <Scene icon={() => <Text>P</Text>} key="profile" title="Profile" component={Profile} store={Store}/>
+          <Scene icon={() => <Text>P</Text>} key="profile" title="Profile" component={Profile} store={store}/>
         </Scene>
-        <Scene key="login" component={Login} title="Login" store={Store} />
+        <Scene key="login" component={Login} title="Login" store={store} />
       </Scene>
     </Router>
   }
