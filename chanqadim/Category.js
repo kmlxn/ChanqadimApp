@@ -6,36 +6,40 @@ import { Actions } from 'react-native-router-flux';
 @observer
 class RenderRow extends Component {
   render() {
-    return <TouchableOpacity onPress={this.props.onPress} style={styles.category}>
+    return <TouchableOpacity style={styles.bundle} onPress={this.props.onPress}>
       <Image style={{width: 80, height: 80}}
-        source={{uri: this.props.category.image}}/>
-      <Text>{this.props.category.name}</Text>
+        source={{uri: this.props.bundle.image}}/>
+      <Text>{this.props.bundle.name}</Text>
     </TouchableOpacity>
   }
 }
 
 @observer
-export default class CategoriesList extends Component {
+export default class Category extends Component {
   constructor() {
     super()
   }
 
-  renderRow(category, sectionID, rowID) {
-    return <RenderRow onPress={() => this.onCategoryPress(category)} category={category} />
+  renderRow(bundle, sectionID, rowID) {
+    return <RenderRow bundle={bundle} onPress={() => this.onBundlePress(bundle)}/>
   }
 
-  onCategoryPress(category) {
-    Actions.bundles({category})
+  onBundlePress(bundle) {
+    Actions.bundle({bundle})
+  }
+
+  componentDidMount() {
+    this.props.store.loadBundles(this.props.category)
   }
 
   render() {
-    const { dataSource } = this.props.store
+    const {bundlesDataSource} = this.props.store
 
     return <View style={styles.container}>
       <ListView
         enableEmptySections
         contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', flex: 1}}
-        dataSource={dataSource}
+        dataSource={bundlesDataSource}
         renderRow={this.renderRow.bind(this)}
       />
     </View>
@@ -49,9 +53,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
-    marginTop: 50,
+    marginTop: 45,
   },
-  category: {
+  bundle: {
     flex: 1,
     margin: 5,
     borderWidth: 1,

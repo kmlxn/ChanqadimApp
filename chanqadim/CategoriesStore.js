@@ -46,7 +46,7 @@ export class CategoryStore {
       if (change === false)
         Actions.login({type: 'reset'})
       else
-        Actions.home({type: 'reset'})
+        Actions.browse({type: 'reset'})
     })
   }
 

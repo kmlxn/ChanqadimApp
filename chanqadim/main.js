@@ -4,8 +4,8 @@ import { observer } from "mobx-react/native"
 import { Text } from 'react-native'
 
 import CategoriesStore from "./CategoriesStore"
-import CategoriesList from "./CategoriesList"
-import BundlesList from "./BundlesList"
+import Categories from "./Categories"
+import Category from "./Category"
 import Bundle from "./Bundle"
 import Profile from "./Profile"
 
@@ -19,8 +19,8 @@ export default class Main extends Component {
           tabBarSelectedItemStyle={{backgroundColor: 'red'}}
         >
           <Scene icon={() => <Text>H</Text>} key="browse" title="Browse">
-            <Scene initial={true} key="home" component={CategoriesList} title="Categories" store={CategoriesStore}/>
-            <Scene key="bundles" component={BundlesList} title="Bundles" store={CategoriesStore}/>
+            <Scene initial={true} key="categories" component={Categories} title="Categories" store={CategoriesStore}/>
+            <Scene key="category" component={Category} title="Category" store={CategoriesStore}/>
             <Scene key="bundle" component={Bundle} title="Bundle" store={CategoriesStore}/>
           </Scene>
           <Scene icon={() => <Text>P</Text>} key="profile" title="Profile" component={Profile} store={CategoriesStore}/>
