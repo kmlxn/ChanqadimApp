@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import { observer } from "mobx-react/native"
-import { View, Text, StyleSheet, ListView, Image } from 'react-native'
+import { View, Text, StyleSheet, ListView, Image, Dimensions } from 'react-native'
+import { Actions } from 'react-native-router-flux';
+
 
 @observer
 class RenderRow extends Component {
@@ -17,22 +19,52 @@ class RenderRow extends Component {
   }
 }
 
+
 @observer
-export default class BundlesList extends Component {
+class Header extends Component {
+  render() {
+    const {description, user} = this.props.bundle;
+
+    return <View style={styles.header}>
+      <View style={styles.user}>
+        <Image style={styles.userImage}
+          source={{uri: user.image}}/>
+        <Text style={styles.userName}>{user.username}</Text>
+      </View>
+      <Text>{description}</Text>
+    </View>
+  }
+}
+
+
+@observer
+export default class Bundle extends Component {
   renderRow(bundle, sectionID, rowID) {
     return <RenderRow bundle={bundle}/>
+  }
+
+  renderHeader(bundle) {
+    return <Header bundle={bundle}/>
   }
 
   componentDidMount() {
     this.props.store.loadBundle(this.props.bundle)
   }
 
+  componentWillMount() {
+    Actions.refresh({title: this.props.bundle.name})
+  }
+
   render() {
-    const {bundleProductsDataSource} = this.props.store
+    const {bundle, bundleProductsDataSource} = this.props.store
+
+    if (Object.keys(bundle).length === 0)
+      return <Text>Loading...</Text>;
 
     return <View style={styles.container}>
       <ListView
         enableEmptySections
+        renderHeader={() => this.renderHeader(bundle)}
         dataSource={bundleProductsDataSource}
         renderRow={this.renderRow.bind(this)}
       />
@@ -45,7 +77,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',
-    marginTop: 45,
+    marginTop: 55,
   },
   bundle: {
     flexDirection: 'row',
@@ -53,5 +85,22 @@ const styles = StyleSheet.create({
     flex: 1,
     borderBottomWidth: 1,
     alignItems: 'center',
+  },
+  header: {
+    height: 100,
+    width: Dimensions.get('window').width - 50,
+  },
+  user: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userName: {
+    flex: 1,
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  userImage: {
+    width: 50,
+    height: 50,
   },
 })
