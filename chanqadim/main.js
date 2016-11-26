@@ -3,13 +3,13 @@ import {Scene, Router} from 'react-native-router-flux';
 import { observer } from "mobx-react/native"
 import { Text } from 'react-native'
 
-import Store from "./Store"
-import Categories from "./Categories"
-import Category from "./Category"
-import Bundle from "./Bundle"
-import Profile from "./Profile"
+import Store from './Store'
+import Categories from './screens/Categories'
+import Category from './screens/Category'
+import Bundle from './screens/Bundle'
+import Profile from './screens/Profile'
+import Login from './screens/Login'
 
-import Login from './Login'
 
 export default class Main extends Component {
   render() {
