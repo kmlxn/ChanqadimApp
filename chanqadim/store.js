@@ -79,12 +79,14 @@ export class Store {
     this.logIn()
   }
 
-  async loadCategories() {
+  async loadCategories(onLoad) {
     const data = await dataManager.getCategories()
     if (data === 'not authenticated' || data === 'access denied')
       this.logOut()
-    else
+    else {
       this.addCategories(data.results)
+      onLoad && onLoad()
+    }
   }
 
   async loadBundles(category) {
@@ -110,6 +112,22 @@ export class Store {
       this.logOut()
     else
       this.addUser(data)
+  }
+
+  async uploadBundle(bundle) {
+    const data = await dataManager.uploadBundle(bundle)
+    if (data === 'not authenticated' || data === 'access denied')
+      this.logOut()
+    else
+      this.addBundle(data)
+  }
+
+  async uploadProduct(product) {
+    const data = await dataManager.uploadProduct(product)
+    if (data === 'not authenticated' || data === 'access denied')
+      this.logOut()
+    else
+      this.addBundle(data)
   }
 }
 
