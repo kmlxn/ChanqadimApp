@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   category: {
-    flex: 1,
     margin: 5,
     borderWidth: 1,
     alignItems: 'center',
