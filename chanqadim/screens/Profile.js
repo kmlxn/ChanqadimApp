@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   bundle: {
-    flex: 1,
     margin: 5,
     borderWidth: 1,
     alignItems: 'center',
