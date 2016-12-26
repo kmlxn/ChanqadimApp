@@ -38,7 +38,8 @@ export default class Category extends Component {
     return <View style={styles.container}>
       <ListView
         enableEmptySections
-        contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', flex: 1}}
+        initialListSize={20}
+        contentContainerStyle={styles.bundles}
         dataSource={bundlesDataSource}
         renderRow={this.renderRow.bind(this)}
       />
@@ -50,13 +51,16 @@ export default class Category extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: 55,
+    marginBottom: 55,
     backgroundColor: '#F5FCFF',
-    marginTop: 45,
+  },
+  bundles: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   bundle: {
-    flex: 1,
     margin: 5,
     borderWidth: 1,
     alignItems: 'center',
