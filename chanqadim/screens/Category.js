@@ -28,8 +28,12 @@ export default class Category extends Component {
     Actions.bundle({bundle})
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.store.loadBundles(this.props.category)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.props.store.loadBundles(nextProps.category)
   }
 
   render() {

@@ -27,7 +27,6 @@ export class Store {
   }
 
   @computed get bundleProductsDataSource() {
-    console.log('bundle', this.bundle);
     return this.bundleProductsDS.cloneWithRows(this.bundle.products ? this.bundle.products.slice() : []);
   }
 
@@ -99,7 +98,6 @@ export class Store {
 
   async loadBundle(bundle) {
     const data = await dataManager.getBundles(bundle.url)
-    console.log('got data', data);
     if (data === 'not authenticated' || data === 'access denied')
       this.logOut()
     else

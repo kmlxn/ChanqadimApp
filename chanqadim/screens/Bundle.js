@@ -47,11 +47,13 @@ export default class Bundle extends Component {
     return <Header bundle={bundle}/>
   }
 
-  componentDidMount() {
+  componentWillReceiveProps() {
     this.props.store.loadBundle(this.props.bundle)
+    Actions.refresh({title: this.props.bundle.name})
   }
 
   componentWillMount() {
+    this.props.store.loadBundle(this.props.bundle)
     Actions.refresh({title: this.props.bundle.name})
   }
 
