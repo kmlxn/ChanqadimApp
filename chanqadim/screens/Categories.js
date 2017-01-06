@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { observer } from "mobx-react/native"
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ListView, Image } from 'react-native'
-import { Actions } from 'react-native-router-flux';
+import { goToCategory } from '../navigation'
 
 @observer
 class RenderRow extends Component {
@@ -25,7 +25,7 @@ export default class Categories extends Component {
   }
 
   onCategoryPress(category) {
-    Actions.category({category})
+    goToCategory(category)
   }
 
   render() {
