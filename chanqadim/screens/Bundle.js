@@ -49,12 +49,10 @@ export default class Bundle extends Component {
 
   componentWillReceiveProps() {
     this.props.store.loadBundle(this.props.bundle)
-    Actions.refresh({title: this.props.bundle.name})
   }
 
   componentWillMount() {
     this.props.store.loadBundle(this.props.bundle)
-    Actions.refresh({title: this.props.bundle.name})
   }
 
   render() {

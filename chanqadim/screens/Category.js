@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { observer } from "mobx-react/native"
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ListView, Image } from 'react-native'
-import { Actions } from 'react-native-router-flux';
+import { goToBundle } from '../navigation'
 
 @observer
 class RenderRow extends Component {
@@ -25,7 +25,7 @@ export default class Category extends Component {
   }
 
   onBundlePress(bundle) {
-    Actions.bundle({bundle})
+    goToBundle(bundle)
   }
 
   componentWillMount() {
