@@ -7,3 +7,7 @@ export function goToBundle(bundle) {
 export function goToCategory(category) {
   Actions.category({category, title: category.name})
 }
+
+export function goToProfileEdit(user) {
+  Actions.editProfile({user, title: user.username})
+}

@@ -127,6 +127,16 @@ export class Store {
     else
       this.addBundle(data)
   }
+
+  async uploadUserInfo(info) {
+    const data = await dataManager.uploadUserInfo(info)
+    if (data === 'wrong password')
+      return data
+    else if (data === 'not authenticated' || data === 'access denied')
+      this.logOut()
+    else
+      this.addUser({...this.user, ...info})
+  }
 }
 
 export default new Store

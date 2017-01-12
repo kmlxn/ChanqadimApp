@@ -66,6 +66,8 @@ console.log('token', token);
       return 'not authenticated';
     if (response.status === 402)
       return 'access denied';
+    if (response.status === 422)
+      return 'validation error'
 
     const responseData = await response.json()
 
@@ -109,4 +111,8 @@ export function uploadBundle(bundle) {
 
 export function uploadProduct(product) {
   return upload(PRODUCTS_URL, product)
+}
+
+export function uploadUserInfo(info) {
+  return upload(CURRENT_USER_URL, info)
 }
