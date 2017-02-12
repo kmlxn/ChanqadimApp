@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { observer } from "mobx-react/native"
 import { View, Text, TextInput, TouchableOpacity,
   StyleSheet, ListView, Image, Dimensions } from 'react-native'
+import {goToProfileEdit} from '../navigation.js'
 
 @observer
 class RenderRow extends Component {
@@ -40,6 +41,7 @@ export default class UserProfile extends Component {
     const { user, userBundlesDataSource } = this.props.store
 
     return <View style={styles.container}>
+      <TouchableOpacity onPress={() => this.onEditPress(user)}><Text>Edit</Text></TouchableOpacity>
       <ListView
         enableEmptySections
         renderHeader={() => this.renderHeader(user)}
@@ -48,6 +50,10 @@ export default class UserProfile extends Component {
         renderRow={this.renderRow.bind(this)}
       />
     </View>
+  }
+  
+  onEditPress(user) {
+    goToProfileEdit(user)
   }
 }
 

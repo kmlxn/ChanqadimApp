@@ -1,6 +1,7 @@
 import {AsyncStorage} from 'react-native';
 
 const CURRENT_USER_URL = 'http://localhost:8000/users/current/',
+  EDIT_USER_URL = 'http://localhost:8000/users/current/edit/',
   AUTH_URL = 'http://localhost:8000/api-token-auth/',
   CATEGORIES_URL = 'http://localhost:8000/categories/',
   BUNDLES_URL = 'http://localhost:8000/bundles/'
@@ -69,8 +70,8 @@ console.log('token', token);
     if (response.status === 422)
       return 'validation error'
 
+    // console.log('dataManager - upload - response text', await response.text());
     const responseData = await response.json()
-
     return responseData;
   } catch (error) {
     console.log('dataManager - upload - response', response)
@@ -114,5 +115,5 @@ export function uploadProduct(product) {
 }
 
 export function uploadUserInfo(info) {
-  return upload(CURRENT_USER_URL, info)
+  return upload(EDIT_USER_URL, info)
 }

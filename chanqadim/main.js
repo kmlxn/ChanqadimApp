@@ -8,6 +8,7 @@ import Categories from './screens/Categories'
 import Category from './screens/Category'
 import Bundle from './screens/Bundle'
 import Profile from './screens/Profile'
+import EditProfile from './screens/EditProfile'
 import Login from './screens/Login'
 import Add from './screens/Add'
 
@@ -24,7 +25,10 @@ export default class Main extends Component {
             <Scene key="category" component={Category} title="Category" store={store}/>
             <Scene key="bundle" component={Bundle} title="Bundle" store={store}/>
           </Scene>
-          <Scene icon={() => <Text>P</Text>} key="profile" title="Profile" component={Profile} store={store}/>
+          <Scene icon={() => <Text>P</Text>} key="profile_stuff" title="Profile Stuff">
+              <Scene key="profile" title="Profile" component={Profile} store={store}/>
+              <Scene key="editProfile" title="Edit Profile" component={EditProfile} store={store}/>
+          </Scene>
           <Scene icon={() => <Text>A</Text>} key="add" title="Add" component={Add} store={store}/>
         </Scene>
         <Scene key="login" component={Login} title="Login" store={store} />

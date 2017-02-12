@@ -2,30 +2,38 @@ import React, { Component } from "react"
 import { observer } from "mobx-react/native"
 import { View, Text, StyleSheet, Image, Dimensions,
   TouchableOpacity, TextInput, Picker, ActivityIndicator } from 'react-native'
-import { Actions } from 'react-native-router-flux';
-import ImagePicker from 'react-native-image-picker'
-
+import { Actions } from 'react-native-router-flux'
+import openImage from '../imagePicker'
 
 @observer
 export default class EditProfile extends Component {
+  componentWillMount() {
+    this.setState({
+      image: this.props.user && this.props.user.image,
+    })
+  }
+  
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      image: newProps.user && newProps.user.image,
+    })
+  }
+  
   render() {
-    const username = this.state.username || this.props.user.username
-    const image = this.state.image || this.props.user.image
-
-    return <View>
-      <ActivityIndicator animating={this.state.isSpinnerDisplayed}/>
+    const image = this.state.image
+    
+    return <View style={styles.container}>
+      {this.state.isSpinnerDisplayed && <ActivityIndicator/>}
       {this.state.isValidationErrorDisplayed && <Text>Invalid input</Text>}
 
-      <TouchableOpacity onPress={() => this.openImage()}>
+      <TouchableOpacity onPress={() => this.onImageClick()}>
         {image ?
           <Image source={image} style={{width: 80, height: 80}}/>
           : <Text>Image</Text>
         }
       </TouchableOpacity>
 
-      <Text>Username</Text>
-      <TextInput defaultValue={username} onChangeText={username => this.setState({username})}/>
-      <Text>Current password</Text>
+      <Text>Old password</Text>
       <TextInput secureTextEntry onChangeText={password => this.setState({password})}/>
       <Text>New password</Text>
       <TextInput secureTextEntry onChangeText={newPassword => this.setState({newPassword})}/>
@@ -39,63 +47,59 @@ export default class EditProfile extends Component {
   }
 
   areInputsValid() {
-    return this.state.username !== '' && this.state.username !== undefined
-      && this.state.password !== '' && this.state.password !== undefined
+    return this.state.password !== '' && this.state.password !== undefined
       && this.state.newPassword === this.state.newPasswordRepeated
   }
 
   async onSubmit() {
-    this.setState({isSubmitButtonDisabled: true})
-
+    this.disableSubmitButton()
+    
     if (this.areInputsValid()) {
-      this.setState({isSpinnerDisplayed: true})
+      this.displaySpinner()
+  
       const status = await this.save()
+      
+      this.hideSpinner()
 
       if (status === 'wrong password')
-        this.setState({isValidationErrorDisplayed: true})
-
-      this.setState({isSpinnerDisplayed: false})
+        this.displayValidationError()
     } else {
-      this.setState({isValidationErrorDisplayed: true})
+      this.displayValidationError()
     }
 
-    this.setState({isSubmitButtonDisabled: false})
+    this.enableSubmitButton()
   }
 
   async save() {
     return await this.props.store.uploadUserInfo({
-      username: this.state.username,
       password: this.state.password,
       newPassword: this.state.newPassword,
     })
   }
-
-  openImage() {
-    const options = {
-      title: 'Select Image',
-      storageOptions: {
-        name: '',
-        skipBackup: true,
-        path: 'images'
-      }
-    };
-
-    ImagePicker.showImagePicker(options, (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker')
-      }
-      else if (response.error) {
-        console.log('ImagePicker Error: ', response.error)
-      }
-      else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton)
-      }
-      else {
-        this.setState({
-          image: {uri: response.uri, isStatic: true, name: 'image.jpg', type: 'image/jpg'},
-        });
-      }
-    });
+  
+  displaySpinner() {
+    this.setState({isSpinnerDisplayed: true})
+  }
+  
+  hideSpinner() {
+    this.setState({isSpinnerDisplayed: false})
+  }
+  
+  displayValidationError() {
+    this.setState({isValidationErrorDisplayed: true})
+  }
+  
+  disableSubmitButton() {
+    this.setState({isSubmitButtonDisabled: true})
+  }
+  
+  enableSubmitButton() {
+    this.setState({isSubmitButtonDisabled: false})
+  }
+  
+  async onImageClick() {
+    const image = await openImage()
+    this.setState({image})
   }
 }
 
@@ -118,5 +122,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     padding: 5,
     marginBottom: 20,
-  }
+  },
 })
