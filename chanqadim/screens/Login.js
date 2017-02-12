@@ -8,6 +8,7 @@ export default class Login extends Component {
   }
   login() {
     this.props.store.login('kmlxn', 'qaz')
+
   }
   onChangeUsername(username) {
     this.setState({username})
