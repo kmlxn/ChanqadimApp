@@ -12,25 +12,30 @@ export default class EditProfile extends Component {
       image: this.props.user && this.props.user.image,
     })
   }
-  
+
   componentWillReceiveProps(newProps) {
     this.setState({
       image: newProps.user && newProps.user.image,
     })
   }
-  
+
   render() {
-    const image = this.state.image
-    
+    let image;
+
+    if (this.state.image) {
+      if (this.state.image.uri)
+        image = <Image source={this.state.image} style={{width: 80, height: 80}}/>
+      else
+        image = <Image source={{uri: this.state.image}} style={{width: 80, height: 80}}/>
+    } else
+      image = <Text>Image</Text>
+
     return <View style={styles.container}>
       {this.state.isSpinnerDisplayed && <ActivityIndicator/>}
       {this.state.isValidationErrorDisplayed && <Text>Invalid input</Text>}
 
       <TouchableOpacity onPress={() => this.onImageClick()}>
-        {image ?
-          <Image source={image} style={{width: 80, height: 80}}/>
-          : <Text>Image</Text>
-        }
+        {image}
       </TouchableOpacity>
 
       <Text>Old password</Text>
@@ -53,12 +58,12 @@ export default class EditProfile extends Component {
 
   async onSubmit() {
     this.disableSubmitButton()
-    
+
     if (this.areInputsValid()) {
       this.displaySpinner()
-  
+
       const status = await this.save()
-      
+
       this.hideSpinner()
 
       if (status === 'wrong password')
@@ -71,32 +76,40 @@ export default class EditProfile extends Component {
   }
 
   async save() {
-    return await this.props.store.uploadUserInfo({
-      password: this.state.password,
-      newPassword: this.state.newPassword,
-    })
+    let data = {}
+
+    if (this.state.image)
+      data.image = {...this.state.image}
+    if (this.state.password)
+      data.password = this.state.password
+    if (this.state.newPassword)
+      data.newPassword = this.state.newPassword
+
+    data.username = 'kmlxn'
+
+    return await this.props.store.uploadUserInfo(data)
   }
-  
+
   displaySpinner() {
     this.setState({isSpinnerDisplayed: true})
   }
-  
+
   hideSpinner() {
     this.setState({isSpinnerDisplayed: false})
   }
-  
+
   displayValidationError() {
     this.setState({isValidationErrorDisplayed: true})
   }
-  
+
   disableSubmitButton() {
     this.setState({isSubmitButtonDisabled: true})
   }
-  
+
   enableSubmitButton() {
     this.setState({isSubmitButtonDisabled: false})
   }
-  
+
   async onImageClick() {
     const image = await openImage()
     this.setState({image})

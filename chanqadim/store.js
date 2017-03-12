@@ -135,7 +135,7 @@ export class Store {
     else if (data === 'not authenticated' || data === 'access denied')
       this.logOut()
     else
-      this.addUser({...this.user, ...info})
+      this.addUser({...this.user, ...data})
   }
 }
 

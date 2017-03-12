@@ -30,9 +30,10 @@ export default class UserProfile extends Component {
   }
 
   renderHeader(user) {
+    const img = user.image && <Image style={styles.userImage} source={{uri: user.image}}/>
+
     return <View style={styles.header}>
-      <Image style={styles.userImage}
-        source={{uri: user.image}}/>
+      {img}
       <Text style={styles.userInfo}>{user.username}</Text>
     </View>
   }
@@ -51,7 +52,7 @@ export default class UserProfile extends Component {
       />
     </View>
   }
-  
+
   onEditPress(user) {
     goToProfileEdit(user)
   }
