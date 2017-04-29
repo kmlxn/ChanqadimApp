@@ -76,7 +76,7 @@ export default class Bundle extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
     marginTop: 55,
   },
   bundle: {

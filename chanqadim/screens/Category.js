@@ -1,15 +1,18 @@
 import React, { Component } from "react"
 import { observer } from "mobx-react/native"
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ListView, Image } from 'react-native'
+import Dimensions from 'Dimensions';
 import { goToBundle } from '../navigation'
 
 @observer
 class RenderRow extends Component {
   render() {
     return <TouchableOpacity style={styles.bundle} onPress={this.props.onPress}>
-      <Image style={{width: 80, height: 80}}
+      <Image style={styles.image}
         source={{uri: this.props.bundle.image}}/>
-      <Text>{this.props.bundle.name}</Text>
+      <View style={styles.title}>
+        <Text style={styles.titleText}>{this.props.bundle.name}</Text>
+      </View>
     </TouchableOpacity>
   }
 }
@@ -57,7 +60,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 55,
     marginBottom: 55,
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
+    paddingTop: 10,
   },
   bundles: {
     flexDirection: 'row',
@@ -66,9 +70,24 @@ const styles = StyleSheet.create({
   },
   bundle: {
     margin: 5,
-    borderWidth: 1,
+    borderWidth: 0.5,
     alignItems: 'center',
-    width: 100,
-    height: 100,
+    width: Dimensions.get('window').width * 0.3,
+    height: Dimensions.get('window').width * 0.3,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  image: {
+    width: Dimensions.get('window').width * 0.3,
+    height: Dimensions.get('window').width * 0.3,
+  },
+  title: {
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    position: 'absolute',
+    width: Dimensions.get('window').width * 0.3,
+    bottom: 0,
+  },
+  titleText: {
+    color: 'white',
+    textAlign: 'center',
   },
 })

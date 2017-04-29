@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Scene, Router} from 'react-native-router-flux';
 import { observer } from "mobx-react/native"
-import { Text } from 'react-native'
+import { Text, StyleSheet } from 'react-native'
 
 import store from './store'
 import Categories from './screens/Categories'
@@ -15,7 +15,7 @@ import Add from './screens/Add'
 
 export default class Main extends Component {
   render() {
-    return <Router>
+    return <Router navigationBarStyle={styles.navBar} titleStyle={styles.navTitle} sceneStyle={styles.routerScene}>
       <Scene key="root">
         <Scene tabs key="main" tabBarStyle={{backgroundColor: 'skyblue'}}
           tabBarSelectedItemStyle={{backgroundColor: 'red'}}
@@ -36,3 +36,17 @@ export default class Main extends Component {
     </Router>
   }
 }
+
+const styles = StyleSheet.create({
+  navBar: {
+    backgroundColor: '#b2ebf2',
+    borderBottomColor: '#b2ebf2',
+    elevation: 2,
+  },
+  navTitle: {
+    color: 'white',
+  },
+  routerScene: {
+    // paddingTop: 200, // some navbar padding to avoid content overlap
+  },
+})
