@@ -17,8 +17,8 @@ export default class Main extends Component {
   render() {
     return <Router navigationBarStyle={styles.navBar} titleStyle={styles.navTitle} sceneStyle={styles.routerScene}>
       <Scene key="root">
-        <Scene tabs key="main" tabBarStyle={{backgroundColor: 'skyblue'}}
-          tabBarSelectedItemStyle={{backgroundColor: 'red'}}
+        <Scene tabs key="main" tabBarStyle={{backgroundColor: 'white', elevation: 8}}
+          tabBarSelectedItemStyle={{borderTopWidth: 2, borderTopColor: '#ffea00'}}
         >
           <Scene icon={() => <Text>H</Text>} key="browse" title="Browse">
             <Scene initial={true} key="categories" component={Categories} title="Categories" store={store}/>
