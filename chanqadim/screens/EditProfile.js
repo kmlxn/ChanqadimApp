@@ -3,7 +3,10 @@ import { observer } from "mobx-react/native"
 import { View, Text, StyleSheet, Image, Dimensions,
   TouchableOpacity, TextInput, Picker, ActivityIndicator } from 'react-native'
 import { Actions } from 'react-native-router-flux'
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import openImage from '../imagePicker'
+import theme from '../theme'
 
 @observer
 export default class EditProfile extends Component {
@@ -46,7 +49,7 @@ export default class EditProfile extends Component {
       <TextInput secureTextEntry onChangeText={newPasswordRepeated => this.setState({newPasswordRepeated})}/>
 
       <TouchableOpacity disabled={this.state.isSubmitButtonDisabled} onPress={() => this.onSubmit()}>
-        <Text>Save</Text>
+        <Icon name="save" size={30} color={theme.accentColor} />
       </TouchableOpacity>
     </View>
   }

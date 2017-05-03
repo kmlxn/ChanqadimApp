@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Scene, Router} from 'react-native-router-flux';
 import { observer } from "mobx-react/native"
 import { Text, StyleSheet } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import store from './store'
 import Categories from './screens/Categories'
@@ -11,6 +12,7 @@ import Profile from './screens/Profile'
 import EditProfile from './screens/EditProfile'
 import Login from './screens/Login'
 import Add from './screens/Add'
+import theme from './theme'
 
 
 export default class Main extends Component {
@@ -18,18 +20,18 @@ export default class Main extends Component {
     return <Router navigationBarStyle={styles.navBar} titleStyle={styles.navTitle} sceneStyle={styles.routerScene}>
       <Scene key="root">
         <Scene tabs key="main" tabBarStyle={{backgroundColor: 'white', elevation: 8}}
-          tabBarSelectedItemStyle={{borderTopWidth: 2, borderTopColor: '#ffea00'}}
+          tabBarSelectedItemStyle={{borderTopWidth: 2, borderTopColor: theme.accentColor}}
         >
-          <Scene icon={() => <Text>H</Text>} key="browse" title="Browse">
+          <Scene icon={() => <Icon name="home" size={30} color="black" />} key="browse" title="Browse">
             <Scene initial={true} key="categories" component={Categories} title="Categories" store={store}/>
             <Scene key="category" component={Category} title="Category" store={store}/>
             <Scene key="bundle" component={Bundle} title="Bundle" store={store}/>
           </Scene>
-          <Scene icon={() => <Text>P</Text>} key="profile_stuff" title="Profile Stuff">
+          <Scene icon={() => <Icon name="user" size={30} color="black" />} key="profile_stuff" title="Profile Stuff">
               <Scene key="profile" title="Profile" component={Profile} store={store}/>
               <Scene key="editProfile" title="Edit Profile" component={EditProfile} store={store}/>
           </Scene>
-          <Scene icon={() => <Text>A</Text>} key="add" title="Add" component={Add} store={store}/>
+          <Scene icon={() => <Icon name="plus" size={30} color="black" />} key="add" title="Add" component={Add} store={store}/>
         </Scene>
         <Scene key="login" component={Login} title="Login" store={store} />
       </Scene>
@@ -39,8 +41,8 @@ export default class Main extends Component {
 
 const styles = StyleSheet.create({
   navBar: {
-    backgroundColor: '#b2ebf2',
-    borderBottomColor: '#b2ebf2',
+    backgroundColor: theme.mainColor,
+    borderBottomColor: theme.mainColor,
     elevation: 2,
   },
   navTitle: {

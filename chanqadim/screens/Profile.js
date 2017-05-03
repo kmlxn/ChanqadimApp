@@ -2,7 +2,10 @@ import React, { Component } from "react"
 import { observer } from "mobx-react/native"
 import { View, Text, TextInput, TouchableOpacity,
   StyleSheet, ListView, Image, Dimensions } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 import {goToProfileEdit} from '../navigation.js'
+import theme from '../theme'
 
 @observer
 class RenderRow extends Component {
@@ -35,6 +38,7 @@ export default class UserProfile extends Component {
     return <View style={styles.header}>
       {img}
       <Text style={styles.userInfo}>{user.username}</Text>
+      <TouchableOpacity onPress={() => this.onEditPress(user)}><Icon name="pencil" size={30} color={theme.accentColor} /></TouchableOpacity>
     </View>
   }
 
@@ -42,7 +46,6 @@ export default class UserProfile extends Component {
     const { user, userBundlesDataSource } = this.props.store
 
     return <View style={styles.container}>
-      <TouchableOpacity onPress={() => this.onEditPress(user)}><Text>Edit</Text></TouchableOpacity>
       <ListView
         enableEmptySections
         renderHeader={() => this.renderHeader(user)}

@@ -4,7 +4,9 @@ import { View, Text, StyleSheet, Image, Dimensions,
   TouchableOpacity, TextInput, Picker } from 'react-native'
 import { Actions } from 'react-native-router-flux';
 import ImagePicker from 'react-native-image-picker'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
+import theme from '../theme'
 
 @observer
 export default class Add extends Component {
@@ -74,7 +76,7 @@ export default class Add extends Component {
         }
       </TouchableOpacity>
       <TouchableOpacity onPress={() => this.addProduct()}>
-        <Text>Add</Text>
+        <Icon name="save" size={30} color={theme.accentColor} />
       </TouchableOpacity>
     </View>
   }
@@ -105,7 +107,7 @@ export default class Add extends Component {
         {image}
       </TouchableOpacity>
       <TouchableOpacity onPress={() => this.addBundle()}>
-        <Text>Add</Text>
+        <Icon name="save" size={30} color={theme.accentColor} />
       </TouchableOpacity>
     </View>
   }
