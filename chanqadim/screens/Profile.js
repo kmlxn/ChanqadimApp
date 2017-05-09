@@ -11,9 +11,11 @@ import theme from '../theme'
 class RenderRow extends Component {
   render() {
     return <View style={styles.bundle}>
-      <Image style={{width: 80, height: 80}}
+      <Image style={styles.bundleImage}
         source={{uri: this.props.bundle.image}}/>
-      <Text>{this.props.bundle.name}</Text>
+      <View style={styles.title}>
+        <Text style={styles.titleText}>{this.props.bundle.name}</Text>
+      </View>
     </View>
   }
 }
@@ -73,10 +75,25 @@ const styles = StyleSheet.create({
   },
   bundle: {
     margin: 5,
-    borderWidth: 1,
     alignItems: 'center',
-    width: 100,
-    height: 100,
+    width: theme.tileWidth,
+    height: theme.tileHeight,
+    borderWidth: 0.5,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  bundleImage: {
+    width: theme.tileWidth,
+    height: theme.tileHeight
+  },
+  title: {
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    position: 'absolute',
+    width: theme.tileWidth,
+    bottom: 0,
+  },
+  titleText: {
+    color: 'white',
+    textAlign: 'center',
   },
   header: {
     flexDirection: 'row',
