@@ -56,27 +56,32 @@ export default class Add extends Component {
     const pickerBundles = user.bundles.map(bundle =>
       <Picker.Item key={Math.random()} label={bundle.name} value={bundle.url} />)
 
-    return <View>
-      <Text>Name</Text>
-      <TextInput onChangeText={name => this.setState({name})}/>
-      <Text>Description</Text>
-      <TextInput onChangeText={description => this.setState({description})}/>
-      <Text>Price</Text>
-      <TextInput onChangeText={price => this.setState({price})}/>
+    const image = this.state.image ?
+      <Image source={this.state.image} style={{width: 80, height: 80}}/>
+      : (
+        <View>
+          <Icon name="picture-o" size={50} color={theme.accentColor} />
+          <Text>Image</Text>
+        </View>
+      )
+
+    return <View style={{flex: 1}}>
+      <TextInput placeholder="Name" onChangeText={name => this.setState({name})}/>
+      <TextInput placeholder="Description" onChangeText={description => this.setState({description})}/>
+      <TextInput placeholder="Price" onChangeText={price => this.setState({price})}/>
+      <Text>Bundle</Text>
       <Picker
         selectedValue={this.state.bundle || user.bundles[0].url}
         onValueChange={bundle => this.setState({bundle})}
       >
         {pickerBundles}
       </Picker>
-      <TouchableOpacity onPress={() => this.openImage()}>
-        {this.state.image ?
-          <Image source={this.state.image} style={{width: 80, height: 80}}/>
-          : <Text>Image</Text>
-        }
+
+      <TouchableOpacity style={styles.image} onPress={() => this.openImage()}>
+        {image}
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => this.addProduct()}>
-        <Icon name="save" size={30} color={theme.accentColor} />
+      <TouchableOpacity style={styles.fab} onPress={() => this.addProduct()}>
+        <Icon style={styles.fabIcon} name="save" size={30} color="white" />
       </TouchableOpacity>
     </View>
   }
@@ -90,24 +95,28 @@ export default class Add extends Component {
 
     const image = this.state.image ?
       <Image source={this.state.image} style={{width: 80, height: 80}}/>
-      : <Text>Image</Text>
+      : (
+        <View>
+          <Icon name="picture-o" size={50} color={theme.accentColor} />
+          <Text>Image</Text>
+        </View>
+      )
 
-    return <View>
-      <Text>Name</Text>
-      <TextInput onChangeText={name => this.setState({name})}/>
-      <Text>Description</Text>
-      <TextInput onChangeText={description => this.setState({description})}/>
+    return <View style={{flex: 1}}>
+      <TextInput placeholder="Name" onChangeText={name => this.setState({name})}/>
+      <TextInput placeholder="Description" onChangeText={description => this.setState({description})}/>
+      <Text>Category</Text>
       <Picker
         selectedValue={this.state.category}
         onValueChange={category => this.setState({category})}
       >
         {pickerCategories}
       </Picker>
-      <TouchableOpacity onPress={() => this.openImage()}>
+      <TouchableOpacity style={styles.image} onPress={() => this.openImage()}>
         {image}
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => this.addBundle()}>
-        <Icon name="save" size={30} color={theme.accentColor} />
+      <TouchableOpacity style={styles.fab} onPress={() => this.addBundle()}>
+        <Icon style={styles.fabIcon} name="save" size={30} color="white" />
       </TouchableOpacity>
     </View>
   }
@@ -117,8 +126,8 @@ export default class Add extends Component {
       this.renderBundle() : this.renderProduct()
 
     return <View style={styles.container}>
-      {this.renderSwitch()}
-      {body}
+        {this.renderSwitch()}
+        {body}
     </View>
   }
 
@@ -163,7 +172,7 @@ export default class Add extends Component {
       <TouchableOpacity onPress={() => this.switchToBundle()}
         style={[
           styles.switch,
-          {borderBottomColor: this.state.type === 'bundle' ? 'red' : 'white'}
+          {borderBottomColor: this.state.type === 'bundle' ? theme.accentColor : 'white'}
         ]}
       >
         <Text style={{textAlign: 'center'}}>Bundle</Text>
@@ -171,7 +180,7 @@ export default class Add extends Component {
       <TouchableOpacity onPress={() => this.switchToProduct()}
         style={[
           styles.switch,
-          {borderBottomColor: this.state.type === 'product' ? 'red' : 'white'}
+          {borderBottomColor: this.state.type === 'product' ? theme.accentColor : 'white'}
         ]}
       >
         <Text style={{textAlign: 'center'}}>Product</Text>
@@ -186,6 +195,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F5FCFF',
     marginTop: 55,
+    padding: 5,
   },
   bundle: {
     flexDirection: 'row',
@@ -199,5 +209,26 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     padding: 5,
     marginBottom: 20,
-  }
+  },
+  image: {
+    backgroundColor: 'gray',
+    alignSelf: 'center',
+    alignItems: 'center',
+    borderRadius: 3,
+    padding: 10,
+  },
+  fab: {
+    elevation: 6,
+    backgroundColor: theme.accentColor,
+    height: 56,
+    width: 56,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 58,
+    right: 10,
+  },
+  fabIcon: {
+  },
 })

@@ -42,7 +42,7 @@ export default class Main extends Component {
 const styles = StyleSheet.create({
   navBar: {
     backgroundColor: theme.mainColor,
-    borderBottomColor: theme.mainColor,
+    borderBottomWidth: 0,
     elevation: 2,
   },
   navTitle: {
