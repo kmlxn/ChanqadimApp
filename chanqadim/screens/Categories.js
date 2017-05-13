@@ -39,7 +39,7 @@ export default class Categories extends Component {
       <StatusBar backgroundColor={'#4dd0e1'} />
       <ListView
         enableEmptySections
-        contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', flex: 1}}
+        contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}
         dataSource={dataSource}
         renderRow={this.renderRow.bind(this)}
       />
@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 50,
     paddingTop: 10,
+    marginBottom: 50,
   },
   category: {
     margin: 5,
