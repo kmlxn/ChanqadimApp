@@ -12,10 +12,10 @@
     "babel-preset-react-native-stage-0": "^1.0.1",
     "mobx": "^2.6.0",
     "mobx-react": "^3.5.8",
-    "react": "^15.4.1",
-    "react-native": "^0.39.2",
+    "react": "16.0.0-alpha.6",
+    "react-native": "0.44.0",
     "react-native-image-picker": "^0.24.1",
-    "react-native-router-flux": "^3.36.0",
+    "react-native-router-flux": "^3.39.1",
     "react-native-tabs": "^1.0.9",
     "react-native-vector-icons": "^4.0.1"
   },
