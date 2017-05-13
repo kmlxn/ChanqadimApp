@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     marginTop: 55,
+    marginBottom: 50,
   },
   bundle: {
     flexDirection: 'row',
