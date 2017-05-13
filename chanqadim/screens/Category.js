@@ -1,8 +1,9 @@
 import React, { Component } from "react"
 import { observer } from "mobx-react/native"
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ListView, Image } from 'react-native'
-import Dimensions from 'Dimensions';
+
 import { goToBundle } from '../navigation'
+import theme from '../theme'
 
 @observer
 class RenderRow extends Component {
@@ -70,20 +71,18 @@ const styles = StyleSheet.create({
   },
   bundle: {
     margin: 5,
-    borderWidth: 0.5,
     alignItems: 'center',
-    width: Dimensions.get('window').width * 0.3,
-    height: Dimensions.get('window').width * 0.3,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
+    width: theme.tileWidth,
+    height: theme.tileHeight,
   },
   image: {
-    width: Dimensions.get('window').width * 0.3,
-    height: Dimensions.get('window').width * 0.3,
+    width: theme.tileWidth,
+    height: theme.tileHeight,
   },
   title: {
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: theme.tileTitleBackgroundColor,
     position: 'absolute',
-    width: Dimensions.get('window').width * 0.3,
+    width: theme.tileWidth,
     bottom: 0,
   },
   titleText: {

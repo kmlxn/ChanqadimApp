@@ -78,15 +78,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: theme.tileWidth,
     height: theme.tileHeight,
-    borderWidth: 0.5,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   bundleImage: {
     width: theme.tileWidth,
     height: theme.tileHeight
   },
   title: {
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: theme.tileTitleBackgroundColor,
     position: 'absolute',
     width: theme.tileWidth,
     bottom: 0,
