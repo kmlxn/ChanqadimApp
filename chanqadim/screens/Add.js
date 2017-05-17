@@ -66,9 +66,9 @@ export default class Add extends Component {
       )
 
     return <View style={{flex: 1}}>
-      <TextInput placeholder="Name" onChangeText={name => this.setState({name})}/>
-      <TextInput placeholder="Description" onChangeText={description => this.setState({description})}/>
-      <TextInput placeholder="Price" onChangeText={price => this.setState({price})}/>
+      <TextInput underlineColorAndroid={theme.textInputBottomColor} placeholder="Name" onChangeText={name => this.setState({name})}/>
+      <TextInput underlineColorAndroid={theme.textInputBottomColor} placeholder="Description" onChangeText={description => this.setState({description})}/>
+      <TextInput underlineColorAndroid={theme.textInputBottomColor} placeholder="Price" onChangeText={price => this.setState({price})}/>
       <Text>Bundle</Text>
       <Picker
         selectedValue={this.state.bundle || user.bundles[0].url}
@@ -103,8 +103,8 @@ export default class Add extends Component {
       )
 
     return <View style={{flex: 1}}>
-      <TextInput placeholder="Name" onChangeText={name => this.setState({name})}/>
-      <TextInput placeholder="Description" onChangeText={description => this.setState({description})}/>
+      <TextInput underlineColorAndroid={theme.textInputBottomColor} placeholder="Name" onChangeText={name => this.setState({name})}/>
+      <TextInput underlineColorAndroid={theme.textInputBottomColor} placeholder="Description" onChangeText={description => this.setState({description})}/>
       <Text>Category</Text>
       <Picker
         selectedValue={this.state.category}

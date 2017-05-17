@@ -8,4 +8,5 @@ export default {
     tileWidth: Dimensions.get('window').width * 0.3,
     tileHeight: Dimensions.get('window').width * 0.3,
     tileTitleBackgroundColor: 'rgba(0, 0, 0, 0.3)',
+    textInputBottomColor: '#b2ebf2',
 }
