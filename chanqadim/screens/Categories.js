@@ -36,7 +36,7 @@ export default class Categories extends Component {
     const { dataSource } = this.props.store
 
     return <View style={styles.container}>
-      <StatusBar backgroundColor={'#4dd0e1'} />
+      <StatusBar backgroundColor={theme.statusBarColor} />
       <ListView
         enableEmptySections
         contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}
