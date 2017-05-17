@@ -60,8 +60,8 @@ export default class Add extends Component {
       <Image source={this.state.image} style={{width: 80, height: 80}}/>
       : (
         <View>
-          <Icon name="picture-o" size={50} color={theme.accentColor} />
-          <Text>Image</Text>
+          <Icon name="picture-o" size={60} color={theme.accentColor} />
+          <Text style={{textAlign: 'center'}}>Image</Text>
         </View>
       )
 
@@ -97,8 +97,8 @@ export default class Add extends Component {
       <Image source={this.state.image} style={{width: 80, height: 80}}/>
       : (
         <View>
-          <Icon name="picture-o" size={50} color={theme.accentColor} />
-          <Text>Image</Text>
+          <Icon name="picture-o" size={60} color={theme.accentColor} />
+          <Text style={{textAlign: 'center'}}>Image</Text>
         </View>
       )
 
@@ -211,10 +211,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   image: {
-    backgroundColor: 'gray',
     alignSelf: 'center',
     alignItems: 'center',
-    borderRadius: 3,
     padding: 10,
   },
   fab: {
