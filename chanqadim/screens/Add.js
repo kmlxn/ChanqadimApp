@@ -16,7 +16,9 @@ export default class Add extends Component {
   }
 
   componentDidMount() {
-    this.props.store.loadUser()
+    this.props.store.loadUser(() => this.setState({
+      bundle: this.props.store.user.bundles[0].url,
+    }))
     this.props.store.loadCategories(() => this.setState({
       categories: this.props.store.categories,
       category: this.props.store.categories[0].url,

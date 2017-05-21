@@ -104,12 +104,14 @@ export class Store {
       this.addBundle(data)
   }
 
-  async loadUser() {
+  async loadUser(onLoad) {
     const data = await dataManager.getUser()
     if (data === 'not authenticated' || data === 'access denied')
       this.logOut()
-    else
+    else {
       this.addUser(data)
+      onLoad && onLoad();
+    }
   }
 
   async uploadBundle(bundle) {
