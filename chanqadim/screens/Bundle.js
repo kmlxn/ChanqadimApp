@@ -1,15 +1,13 @@
-import React, { Component } from "react"
-import { observer } from "mobx-react/native"
+import React, { Component } from 'react'
+import { observer } from 'mobx-react/native'
 import { View, Text, StyleSheet, ListView, Image, Dimensions } from 'react-native'
-import { Actions } from 'react-native-router-flux';
-
 
 @observer
 class RenderRow extends Component {
-  render() {
+  render () {
     return <View style={styles.bundle}>
       <Image style={{width: 80, height: 80, marginRight: 8}}
-        source={{uri: this.props.bundle.image}}/>
+        source={{uri: this.props.bundle.image}} />
       <View>
         <Text style={{fontSize: 16}}>{this.props.bundle.name}</Text>
         <Text>{this.props.bundle.description}</Text>
@@ -19,16 +17,15 @@ class RenderRow extends Component {
   }
 }
 
-
 @observer
 class Header extends Component {
-  render() {
-    const {description, user} = this.props.bundle;
+  render () {
+    const {description, user} = this.props.bundle
 
     return <View style={styles.header}>
       <View style={styles.user}>
         <Image style={styles.userImage}
-          source={{uri: user.image}}/>
+          source={{uri: user.image}} />
         <Text style={styles.userName}>{user.username}</Text>
       </View>
       <Text>{description}</Text>
@@ -36,30 +33,28 @@ class Header extends Component {
   }
 }
 
-
 @observer
 export default class Bundle extends Component {
-  renderRow(bundle, sectionID, rowID) {
-    return <RenderRow bundle={bundle}/>
+  renderRow (bundle, sectionID, rowID) {
+    return <RenderRow bundle={bundle} />
   }
 
-  renderHeader(bundle) {
-    return <Header bundle={bundle}/>
+  renderHeader (bundle) {
+    return <Header bundle={bundle} />
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps () {
     this.props.store.loadBundle(this.props.bundle)
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.props.store.loadBundle(this.props.bundle)
   }
 
-  render() {
+  render () {
     const {bundle, bundleProductsDataSource} = this.props.store
 
-    if (Object.keys(bundle).length === 0)
-      return <Text>Loading...</Text>;
+    if (Object.keys(bundle).length === 0) { return <Text>Loading...</Text> }
 
     return <View style={styles.container}>
       <ListView
@@ -72,36 +67,35 @@ export default class Bundle extends Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
     marginTop: 55,
-    marginBottom: 50,
+    marginBottom: 50
   },
   bundle: {
     flexDirection: 'row',
-    alignSelf: "stretch",
+    alignSelf: 'stretch',
     flex: 1,
     borderBottomWidth: 1,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   header: {
     height: 100,
-    width: Dimensions.get('window').width - 50,
+    width: Dimensions.get('window').width - 50
   },
   user: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   userName: {
     flex: 1,
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   userImage: {
     width: 50,
-    height: 50,
-  },
+    height: 50
+  }
 })

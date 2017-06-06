@@ -1,12 +1,12 @@
 import ImagePicker from 'react-native-image-picker'
 
-export default function openImage() {
+export default function openImage () {
   const options = {
     title: 'Select Image',
     storageOptions: {
       name: '',
       skipBackup: true,
-      path: 'images',
+      path: 'images'
     }
   }
 

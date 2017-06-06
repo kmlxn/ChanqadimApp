@@ -1,26 +1,27 @@
-import React, { Component } from "react"
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+import React, { Component } from 'react'
+import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 
 export default class Login extends Component {
-  constructor() {
+  constructor () {
     super()
     this.state = {}
   }
-  login() {
+  login () {
     this.props.store.login('kmlxn', 'qaz')
-
   }
-  onChangeUsername(username) {
+  onChangeUsername (username) {
     this.setState({username})
   }
-  onChangePassword(password) {
+  onChangePassword (password) {
     this.setState({password})
   }
-  render() {
+  render () {
     return <View style={{marginTop: 60}}>
-      <TextInput onChangeText={this.onChangeUsername.bind(this)}/>
-      <TextInput secureTextEntry onChangeText={this.onChangePassword.bind(this)}/>
-      <TouchableOpacity onPress={() => this.login()} style={{backgroundColor: 'red', borderRadius: 10, padding: 10, margin: 10}}>
+      <TextInput onChangeText={this.onChangeUsername.bind(this)} />
+      <TextInput secureTextEntry onChangeText={this.onChangePassword.bind(this)} />
+      <TouchableOpacity onPress={() => this.login()}
+        style={{backgroundColor: 'red', borderRadius: 10, padding: 10, margin: 10}}
+      >
         <Text>login</Text>
       </TouchableOpacity>
     </View>

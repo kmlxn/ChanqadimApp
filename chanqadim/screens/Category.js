@@ -1,16 +1,16 @@
-import React, { Component } from "react"
-import { observer } from "mobx-react/native"
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ListView, Image } from 'react-native'
+import React, { Component } from 'react'
+import { observer } from 'mobx-react/native'
+import { View, Text, TouchableOpacity, StyleSheet, ListView, Image } from 'react-native'
 
 import { goToBundle } from '../navigation'
 import theme from '../theme'
 
 @observer
 class RenderRow extends Component {
-  render() {
+  render () {
     return <TouchableOpacity style={styles.bundle} onPress={this.props.onPress}>
       <Image style={styles.image}
-        source={{uri: this.props.bundle.image}}/>
+        source={{uri: this.props.bundle.image}} />
       <View style={styles.title}>
         <Text style={styles.titleText}>{this.props.bundle.name}</Text>
       </View>
@@ -20,27 +20,23 @@ class RenderRow extends Component {
 
 @observer
 export default class Category extends Component {
-  constructor() {
-    super()
+  renderRow (bundle, sectionID, rowID) {
+    return <RenderRow bundle={bundle} onPress={() => this.onBundlePress(bundle)} />
   }
 
-  renderRow(bundle, sectionID, rowID) {
-    return <RenderRow bundle={bundle} onPress={() => this.onBundlePress(bundle)}/>
-  }
-
-  onBundlePress(bundle) {
+  onBundlePress (bundle) {
     goToBundle(bundle)
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.props.store.loadBundles(this.props.category)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     this.props.store.loadBundles(nextProps.category)
   }
 
-  render() {
+  render () {
     const {bundlesDataSource} = this.props.store
 
     return <View style={styles.container}>
@@ -55,38 +51,37 @@ export default class Category extends Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 55,
     marginBottom: 55,
     backgroundColor: 'white',
-    paddingTop: 10,
+    paddingTop: 10
   },
   bundles: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   bundle: {
     margin: 5,
     alignItems: 'center',
     width: theme.tileWidth,
-    height: theme.tileHeight,
+    height: theme.tileHeight
   },
   image: {
     width: theme.tileWidth,
-    height: theme.tileHeight,
+    height: theme.tileHeight
   },
   title: {
     backgroundColor: theme.tileTitleBackgroundColor,
     position: 'absolute',
     width: theme.tileWidth,
-    bottom: 0,
+    bottom: 0
   },
   titleText: {
     color: 'white',
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 })

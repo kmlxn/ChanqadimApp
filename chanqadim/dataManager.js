@@ -1,25 +1,24 @@
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage} from 'react-native'
 
-const CURRENT_USER_URL = 'http://localhost:8000/users/current/',
-  EDIT_USER_URL = 'http://localhost:8000/users/current/edit/',
-  AUTH_URL = 'http://localhost:8000/api-token-auth/',
-  CATEGORIES_URL = 'http://localhost:8000/categories/',
-  BUNDLES_URL = 'http://localhost:8000/bundles/'
-  PRODUCTS_URL = 'http://localhost:8000/products/'
-  STORAGE_KEY = '@chanqadimv3:auth_token'
+const CURRENT_USER_URL = 'http://localhost:8000/users/current/'
+const EDIT_USER_URL = 'http://localhost:8000/users/current/edit/'
+const AUTH_URL = 'http://localhost:8000/api-token-auth/'
+const CATEGORIES_URL = 'http://localhost:8000/categories/'
+const BUNDLES_URL = 'http://localhost:8000/bundles/'
+const PRODUCTS_URL = 'http://localhost:8000/products/'
+const STORAGE_KEY = '@chanqadimv3:auth_token'
 
-
-function getAuthToken() {
+function getAuthToken () {
   return AsyncStorage.getItem(STORAGE_KEY)
     .catch(error => console.error('AsyncStorage error: ' + error.message))
 }
 
-function setAuthToken(token) {
+function setAuthToken (token) {
   return AsyncStorage.setItem(STORAGE_KEY, token)
     .catch(error => console.error('AsyncStorage error: ' + error.message))
 }
 
-async function fetchJson(url) {
+async function fetchJson (url) {
   const token = await getAuthToken()
 
   try {
@@ -27,28 +26,25 @@ async function fetchJson(url) {
       headers: {'Authorization': 'Token ' + token}
     })
 
-    if (response.status === 401)
-      return 'not authenticated'
-    if (response.status === 402)
-      return 'access denied'
+    if (response.status === 401) { return 'not authenticated' }
+    if (response.status === 402) { return 'access denied' }
 
     const data = await response.json()
 
-    return data;
+    return data
   } catch (error) {
     console.error(error)
   }
 }
 
-async function upload(url, data) {
-  console.log('dataManager - upload', data);
+async function upload (url, data) {
+  console.log('dataManager - upload', data)
   const formdata = new FormData()
-  for (let key in data)
-      formdata.append(key, data[key])
+  for (let key in data) { formdata.append(key, data[key]) }
 
   const token = await getAuthToken()
-console.log('token', token);
-  let response;
+  console.log('token', token)
+  let response
   try {
     response = await fetch(url, {
       method: 'post',
@@ -57,34 +53,31 @@ console.log('token', token);
         'Accept': 'application/json',
         'Content-Type': 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d',
         'Authorization': 'Token ' + token,
-        'Content-Disposition': 'attachment; filename=image.jpg',
-      },
+        'Content-Disposition': 'attachment; filename=image.jpg'
+      }
     })
 
     console.log('dataManager - upload - response', response)
 
-    if (response.status === 401)
-      return 'not authenticated';
-    if (response.status === 402)
-      return 'access denied';
-    if (response.status === 422)
-      return 'validation error'
+    if (response.status === 401) { return 'not authenticated' }
+    if (response.status === 402) { return 'access denied' }
+    if (response.status === 422) { return 'validation error' }
 
     // console.log('dataManager - upload - response text', await response.text());
     const responseData = await response.json()
-    return responseData;
+    return responseData
   } catch (error) {
     console.log('dataManager - upload - response', response)
     console.error(error)
   }
 }
 
-export function login(username, password) {
+export function login (username, password) {
   return fetch(AUTH_URL, {
-    method: "POST",
+    method: 'POST',
     headers: {
       'Accept': 'application/json',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify({ username, password })
   })
@@ -93,27 +86,27 @@ export function login(username, password) {
     .catch(error => console.error(error))
 }
 
-export function getCategories() {
+export function getCategories () {
   return fetchJson(CATEGORIES_URL)
 }
 
-export function getBundles(categoryUrl) {
+export function getBundles (categoryUrl) {
   return fetchJson(categoryUrl)
 }
 
-export function getUser(user) {
+export function getUser (user) {
   const userUrl = user ? user.url : CURRENT_USER_URL
   return fetchJson(userUrl)
 }
 
-export function uploadBundle(bundle) {
+export function uploadBundle (bundle) {
   return upload(BUNDLES_URL, bundle)
 }
 
-export function uploadProduct(product) {
+export function uploadProduct (product) {
   return upload(PRODUCTS_URL, product)
 }
 
-export function uploadUserInfo(info) {
+export function uploadUserInfo (info) {
   return upload(EDIT_USER_URL, info)
 }
