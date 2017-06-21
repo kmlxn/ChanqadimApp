@@ -44,15 +44,15 @@ export default class Bundle extends Component {
   }
 
   componentWillReceiveProps () {
-    this.props.store.loadBundle(this.props.bundle)
+    this.props.mobxStore.loadBundle(this.props.bundle)
   }
 
   componentWillMount () {
-    this.props.store.loadBundle(this.props.bundle)
+    this.props.mobxStore.loadBundle(this.props.bundle)
   }
 
   render () {
-    const {bundle, bundleProductsDataSource} = this.props.store
+    const {bundle, bundleProductsDataSource} = this.props.mobxStore
 
     if (Object.keys(bundle).length === 0) { return <Text>Loading...</Text> }
 

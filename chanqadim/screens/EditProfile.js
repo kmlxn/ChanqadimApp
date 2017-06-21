@@ -87,7 +87,7 @@ export default class EditProfile extends Component {
 
     data.username = 'kmlxn'
 
-    return await this.props.store.uploadUserInfo(data)
+    return await this.props.mobxStore.uploadUserInfo(data)
   }
 
   displaySpinner () {

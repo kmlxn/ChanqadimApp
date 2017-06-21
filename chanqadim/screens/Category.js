@@ -29,15 +29,15 @@ export default class Category extends Component {
   }
 
   componentWillMount () {
-    this.props.store.loadBundles(this.props.category)
+    this.props.mobxStore.loadBundles(this.props.category)
   }
 
   componentWillReceiveProps (nextProps) {
-    this.props.store.loadBundles(nextProps.category)
+    this.props.mobxStore.loadBundles(nextProps.category)
   }
 
   render () {
-    const {bundlesDataSource} = this.props.store
+    const {bundlesDataSource} = this.props.mobxStore
 
     return <View style={styles.container}>
       <ListView

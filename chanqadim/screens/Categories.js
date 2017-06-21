@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
-import { observer } from 'mobx-react/native'
-import { View, Text, TouchableOpacity, StyleSheet, ListView, Image, StatusBar } from 'react-native'
+import React, { Component, PropTypes } from 'react'
+import { View, Text, TouchableOpacity, StyleSheet, ListView, Image, StatusBar, ActivityIndicator } from 'react-native'
 
 import { goToCategory } from '../navigation'
 import theme from '../theme'
+import { fetchCategories } from '../actions'
+import { connect } from 'react-redux'
 
-@observer
 class RenderRow extends Component {
   render () {
     return <TouchableOpacity onPress={this.props.onPress} style={styles.category}>
@@ -18,8 +18,20 @@ class RenderRow extends Component {
   }
 }
 
-@observer
-export default class Categories extends Component {
+class Categories extends Component {
+  static propTypes = {
+    categories: PropTypes.object
+  }
+
+  constructor (props) {
+    super(props)
+    setTimeout(() => {
+      this.props.dispatch(fetchCategories())
+    }, 100)
+
+    this.listDataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+  }
+
   renderRow (category, sectionID, rowID) {
     return <RenderRow onPress={() => this.onCategoryPress(category)} category={category} />
   }
@@ -28,20 +40,34 @@ export default class Categories extends Component {
     goToCategory(category)
   }
 
-  render () {
-    const { dataSource } = this.props.store
+  makeContent (categories) {
+    if (!categories.allIds || categories.isFetching) {
+      return <ActivityIndicator />
+    } else {
+      const categories_ = categories.allIds.map(id => categories.byId[id])
+      const dataSource = this.listDataSource.cloneWithRows(categories_)
 
-    return <View style={styles.container}>
-      <StatusBar backgroundColor={theme.statusBarColor} />
-      <ListView
+      return <ListView
         enableEmptySections
         contentContainerStyle={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center'}}
         dataSource={dataSource}
         renderRow={this.renderRow.bind(this)}
       />
+    }
+  }
+
+  render () {
+    const content = this.makeContent(this.props.categories)
+    console.log(this.props.categories)
+
+    return <View style={styles.container}>
+      <StatusBar backgroundColor={theme.statusBarColor} />
+      {content}
     </View>
   }
 }
+
+export default connect(({categories}) => ({categories}))(Categories)
 
 const styles = StyleSheet.create({
   container: {

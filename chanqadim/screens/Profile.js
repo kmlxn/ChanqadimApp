@@ -27,7 +27,7 @@ export default class UserProfile extends Component {
   }
 
   componentDidMount () {
-    this.props.store.loadUser()
+    this.props.mobxStore.loadUser()
   }
 
   renderHeader (user) {
@@ -43,7 +43,7 @@ export default class UserProfile extends Component {
   }
 
   render () {
-    const { user, userBundlesDataSource } = this.props.store
+    const { user, userBundlesDataSource } = this.props.mobxStore
 
     return <View style={styles.container}>
       <ListView

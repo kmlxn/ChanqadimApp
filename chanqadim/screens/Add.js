@@ -16,18 +16,18 @@ export default class Add extends Component {
   }
 
   componentDidMount () {
-    this.props.store.loadUser(() => this.setState({
-      bundle: this.props.store.user.bundles[0].url
+    this.props.mobxStore.loadUser(() => this.setState({
+      bundle: this.props.mobxStore.user.bundles[0].url
     }))
-    this.props.store.loadCategories(() => this.setState({
-      categories: this.props.store.categories,
-      category: this.props.store.categories[0].url
+    this.props.mobxStore.loadCategories(() => this.setState({
+      categories: this.props.mobxStore.categories,
+      category: this.props.mobxStore.categories[0].url
     }))
   }
 
   async addBundle () {
     console.log('Add.js - addBundle', this.state)
-    const bundle = await this.props.store.uploadBundle({
+    const bundle = await this.props.mobxStore.uploadBundle({
       name: this.state.name,
       description: this.state.description,
       category: this.state.category,
@@ -39,7 +39,7 @@ export default class Add extends Component {
 
   addProduct () {
     console.log('Add.js - addProduct', this.state)
-    this.props.store.uploadProduct({
+    this.props.mobxStore.uploadProduct({
       name: this.state.name,
       description: this.state.description,
       price: this.state.price,
@@ -49,7 +49,7 @@ export default class Add extends Component {
   }
 
   renderProduct () {
-    const user = this.props.store.user
+    const user = this.props.mobxStore.user
 
     if (!user) { return <Text>Loading...</Text> }
 
