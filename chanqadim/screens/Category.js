@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { observer } from 'mobx-react/native'
 import { View, Text, TouchableOpacity, StyleSheet, ListView, Image, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 
@@ -7,7 +6,6 @@ import { goToBundle } from '../navigation'
 import { getActiveCategoryBundles } from '../reducers'
 import theme from '../theme'
 
-@observer
 class RenderRow extends Component {
   render () {
     return <TouchableOpacity style={styles.bundle} onPress={this.props.onPress}>
@@ -20,7 +18,6 @@ class RenderRow extends Component {
   }
 }
 
-@observer
 class Category extends Component {
   static propTypes = {
     scenes: PropTypes.object,
