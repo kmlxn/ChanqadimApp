@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { observer } from 'mobx-react/native'
-import { View, Text, TouchableOpacity, StyleSheet, ListView, Image } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, ListView, Image, ActivityIndicator } from 'react-native'
+import { connect } from 'react-redux'
 
 import { goToBundle } from '../navigation'
+import { getActiveCategoryBundles } from '../reducers'
 import theme from '../theme'
 
 @observer
@@ -19,7 +21,18 @@ class RenderRow extends Component {
 }
 
 @observer
-export default class Category extends Component {
+class Category extends Component {
+  static propTypes = {
+    scenes: PropTypes.object,
+    categories: PropTypes.object,
+    bundles: PropTypes.array
+  }
+
+  constructor () {
+    super()
+    this.listDataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+  }
+
   renderRow (bundle, sectionID, rowID) {
     return <RenderRow bundle={bundle} onPress={() => this.onBundlePress(bundle)} />
   }
@@ -28,28 +41,36 @@ export default class Category extends Component {
     goToBundle(bundle)
   }
 
-  componentWillMount () {
-    this.props.mobxStore.loadBundles(this.props.category)
-  }
+  makeContent () {
+    if (this.props.scenes.category.isFetching) {
+      return <ActivityIndicator />
+    } else {
+      const dataSource = this.listDataSource.cloneWithRows(this.props.bundles)
 
-  componentWillReceiveProps (nextProps) {
-    this.props.mobxStore.loadBundles(nextProps.category)
-  }
-
-  render () {
-    const {bundlesDataSource} = this.props.mobxStore
-
-    return <View style={styles.container}>
-      <ListView
+      return <ListView
         enableEmptySections
         initialListSize={20}
         contentContainerStyle={styles.bundles}
-        dataSource={bundlesDataSource}
+        dataSource={dataSource}
         renderRow={this.renderRow.bind(this)}
       />
+    }
+  }
+
+  render () {
+    return <View style={styles.container}>
+      {this.makeContent()}
     </View>
   }
 }
+
+const mapStateToProps = state => ({
+  bundles: getActiveCategoryBundles(state),
+  categories: state.categories,
+  scenes: state.scenes
+})
+
+export default connect(mapStateToProps)(Category)
 
 const styles = StyleSheet.create({
   container: {

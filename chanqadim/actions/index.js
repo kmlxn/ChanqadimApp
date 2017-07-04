@@ -6,6 +6,10 @@ let token = ''
 
 getAuthToken()
 
+function wait () {
+  return new Promise(resolve => setTimeout(resolve, 500))
+}
+
 export const requestCategories = () => ({
   type: 'REQUEST_CATEGORIES'
 })
@@ -18,6 +22,11 @@ export const requestCategory = (url) => ({
 export const recieveCategories = (categories) => ({
   type: 'RECEIVE_CATEGORIES',
   items: categories
+})
+
+export const recieveCategory = (category) => ({
+  type: 'RECEIVE_CATEGORY',
+  items: category
 })
 
 export const fetchCategories = () => dispatch => {
@@ -38,7 +47,8 @@ export const fetchCategories = () => dispatch => {
 export const fetchCategory = (url) => dispatch => {
   dispatch(requestCategory(url))
 
-  return fetch(
+  return wait().then(() =>
+    fetch(
       url,
       { headers: { 'Authorization': `Token ${token}` } }
     )
@@ -46,9 +56,10 @@ export const fetchCategory = (url) => dispatch => {
       response => response.json(),
       error => console.error('ERROR:', error))
     .then(json => {
-      const normalizedJSON = normalize(json.results, schema.category)
-      dispatch(recieveCategories(normalizedJSON))
+      const normalizedJSON = normalize(json, schema.category)
+      dispatch(recieveCategory(normalizedJSON))
     })
+  )
 }
 
 function getAuthToken () {

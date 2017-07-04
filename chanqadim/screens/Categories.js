@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ListView, Image, StatusBar, A
 
 import { goToCategory } from '../navigation'
 import theme from '../theme'
-import { fetchCategories } from '../actions'
+import { fetchCategories, fetchCategory } from '../actions'
 import { connect } from 'react-redux'
 
 class RenderRow extends Component {
@@ -38,6 +38,7 @@ class Categories extends Component {
 
   onCategoryPress (category) {
     goToCategory(category)
+    this.props.dispatch(fetchCategory(category.url))
   }
 
   makeContent (categories) {

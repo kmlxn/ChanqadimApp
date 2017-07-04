@@ -5,7 +5,7 @@ export function goToBundle (bundle) {
 }
 
 export function goToCategory (category) {
-  Actions.category({category, title: category.name})
+  Actions.category({categoryUrl: category.url, title: category.name})
 }
 
 export function goToProfileEdit (user) {
