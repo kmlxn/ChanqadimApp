@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
-import { observer } from 'mobx-react/native'
-import { View, Text, StyleSheet, ListView, Image, Dimensions } from 'react-native'
+import React, { Component, PropTypes } from 'react'
+import { View, Text, StyleSheet, ListView, Image, Dimensions, ActivityIndicator } from 'react-native'
+import { connect } from 'react-redux'
 
-@observer
+import { getProducts } from '../reducers/products'
+import { getCurrentSceneItemUrl, isCurrentSceneLoading, getBundle } from '../reducers'
+
 class RenderRow extends Component {
   render () {
     return <View style={styles.bundle}>
@@ -17,7 +19,6 @@ class RenderRow extends Component {
   }
 }
 
-@observer
 class Header extends Component {
   render () {
     const {description, user} = this.props.bundle
@@ -33,8 +34,18 @@ class Header extends Component {
   }
 }
 
-@observer
-export default class Bundle extends Component {
+class Bundle extends Component {
+  static propTypes = {
+    products: PropTypes.array,
+    isLoading: PropTypes.bool,
+    bundle: PropTypes.object
+  }
+
+  constructor () {
+    super()
+    this.listDataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+  }
+
   renderRow (bundle, sectionID, rowID) {
     return <RenderRow bundle={bundle} />
   }
@@ -43,29 +54,39 @@ export default class Bundle extends Component {
     return <Header bundle={bundle} />
   }
 
-  componentWillReceiveProps () {
-    this.props.mobxStore.loadBundle(this.props.bundle)
-  }
+  makeContent () {
+    if (this.props.isLoading) {
+      return <ActivityIndicator />
+    }
 
-  componentWillMount () {
-    this.props.mobxStore.loadBundle(this.props.bundle)
+    const dataSource = this.listDataSource.cloneWithRows(this.props.products)
+
+    return <ListView
+      enableEmptySections
+      renderHeader={() => this.renderHeader(this.props.bundle)}
+      dataSource={dataSource}
+      renderRow={this.renderRow.bind(this)}
+    />
   }
 
   render () {
-    const {bundle, bundleProductsDataSource} = this.props.mobxStore
-
-    if (Object.keys(bundle).length === 0) { return <Text>Loading...</Text> }
-
     return <View style={styles.container}>
-      <ListView
-        enableEmptySections
-        renderHeader={() => this.renderHeader(bundle)}
-        dataSource={bundleProductsDataSource}
-        renderRow={this.renderRow.bind(this)}
-      />
+      {this.makeContent()}
     </View>
   }
 }
+
+const mapStateToProps = state => {
+  const bundleUrl = getCurrentSceneItemUrl(state)
+
+  return {
+    products: getProducts(state, bundleUrl),
+    isLoading: isCurrentSceneLoading(state),
+    bundle: getBundle(state.bundles, bundleUrl)
+  }
+}
+
+export default connect(mapStateToProps)(Bundle)
 
 const styles = StyleSheet.create({
   container: {

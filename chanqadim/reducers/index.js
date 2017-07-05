@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux'
 import union from 'lodash/union'
 
+import products from './products'
+
 function categories (state = {}, action) {
   switch (action.type) {
     case 'REQUEST_CATEGORIES':
@@ -42,12 +44,22 @@ function scenes (state = scenesInitialState, action) {
     case 'REQUEST_CATEGORY':
       return {
         ...state,
-        category: {isFetching: true, categoryUrl: action.url}
+        category: {isFetching: true, url: action.url}
       }
     case 'RECEIVE_CATEGORY':
       return {
         ...state,
-        category: {isFetching: false, categoryUrl: action.items.entities.categories[action.items.result].url}
+        category: {isFetching: false, url: action.items.entities.categories[action.items.result].url}
+      }
+    case 'REQUEST_BUNDLE':
+      return {
+        ...state,
+        bundle: {isFetching: true, url: action.url}
+      }
+    case 'RECEIVE_BUNDLE':
+      return {
+        ...state,
+        bundle: {isFetching: false, url: action.items.entities.bundles[action.items.result].url}
       }
   }
 
@@ -73,6 +85,14 @@ function activeScene (state = 'categories', action) {
   return state
 }
 
+export function getCurrentSceneItemUrl (state) {
+  return state.scenes[state.activeScene].url
+}
+
+export function isCurrentSceneLoading (state) {
+  return state.scenes[state.activeScene].isFetching
+}
+
 function bundles (state = {}, action) {
   switch (action.type) {
     case 'RECEIVE_CATEGORY':
@@ -81,14 +101,25 @@ function bundles (state = {}, action) {
         byId: bundlesById(state.byId, action),
         allIds: bundlesAllIds(state.allIds, action)
       }
-
+    case 'REQUEST_BUNDLE':
+      return state
+    case 'RECEIVE_BUNDLE':
+      return {
+        ...state,
+        byId: bundlesById(state.byId, action),
+        allIds: bundlesAllIds(state.allIds, action)
+      }
     default:
       return state
   }
 }
 
+export function getBundle (bundles, url) {
+  return bundles.byId[url]
+}
+
 export function getActiveCategoryBundles ({bundles, categories, scenes}) {
-  const activeCategoryUrl = scenes.category.categoryUrl
+  const activeCategoryUrl = scenes.category.url
   const activeCategory = categories.byId[activeCategoryUrl]
 
   return activeCategory && activeCategory.bundles && activeCategory.bundles.map(id => bundles.byId[id])
@@ -113,14 +144,10 @@ function bundlesAllIds (state = [], action) {
   return state
 }
 
-function items (state = {}, action) {
-  return state
-}
-
 const reducers = combineReducers({
   categories,
   bundles,
-  items,
+  products,
   scenes,
   activeScene
 })

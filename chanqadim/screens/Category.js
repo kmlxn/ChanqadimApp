@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import { goToBundle } from '../navigation'
 import { getActiveCategoryBundles } from '../reducers'
+import { fetchBundle } from '../actions'
 import theme from '../theme'
 
 class RenderRow extends Component {
@@ -36,6 +37,7 @@ class Category extends Component {
 
   onBundlePress (bundle) {
     goToBundle(bundle)
+    this.props.dispatch(fetchBundle(bundle.url))
   }
 
   makeContent () {

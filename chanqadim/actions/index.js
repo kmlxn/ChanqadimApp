@@ -29,6 +29,16 @@ export const recieveCategory = (category) => ({
   items: category
 })
 
+export const requestBundle = url => ({
+  type: 'REQUEST_BUNDLE',
+  url
+})
+
+export const receiveBundle = bundle => ({
+  type: 'RECEIVE_BUNDLE',
+  items: bundle
+})
+
 export const fetchCategories = () => dispatch => {
   dispatch(requestCategories())
   return fetch(
@@ -58,6 +68,24 @@ export const fetchCategory = (url) => dispatch => {
     .then(json => {
       const normalizedJSON = normalize(json, schema.category)
       dispatch(recieveCategory(normalizedJSON))
+    })
+  )
+}
+
+export const fetchBundle = url => dispatch => {
+  dispatch(requestBundle(url))
+
+  return wait().then(() =>
+    fetch(
+      url,
+      { headers: { 'Authorization': `Token ${token}` } }
+    )
+    .then(
+      response => response.json(),
+      error => console.error('ERROR:', error))
+    .then(json => {
+      const normalizedJSON = normalize(json, schema.bundle)
+      dispatch(receiveBundle(normalizedJSON))
     })
   )
 }

@@ -1,11 +1,11 @@
 import { schema } from 'normalizr'
 
-export const item = new schema.Entity('items', {}, { idAttribute: 'url' })
-export const items = new schema.Array(item)
+export const product = new schema.Entity('products', {}, { idAttribute: 'url' })
+export const products = new schema.Array(product)
 
 export const bundle = new schema.Entity(
   'bundles',
-  { items },
+  { products },
   { idAttribute: 'url' }
 )
 export const bundles = new schema.Array(bundle)
