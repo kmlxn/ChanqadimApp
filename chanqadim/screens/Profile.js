@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 import { goToProfileEdit } from '../navigation.js'
 import { fetchCurrentUser } from '../actions'
-import { getCurrentUserBundles, getCurrentUser, isCurrentSceneLoading } from '../reducers'
+import { getCurrentUserBundles, getCurrentUser, isSceneLoading } from '../reducers'
 import theme from '../theme'
 
 class RenderRow extends Component {
@@ -82,7 +82,7 @@ class UserProfile extends Component {
 function mapStateToProps (state) {
   return {
     user: getCurrentUser(state),
-    isLoading: isCurrentSceneLoading(state),
+    isLoading: isSceneLoading(state, 'profile'),
     bundles: getCurrentUserBundles(state)
   }
 }

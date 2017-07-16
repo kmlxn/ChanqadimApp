@@ -54,3 +54,7 @@ export function getCurrentUser ({ users }) {
 export function isCurrentSceneLoading ({ scenes }) {
   return fromScenes.isCurrentSceneLoading(scenes)
 }
+
+export function isSceneLoading ({ scenes }, key) {
+  return fromScenes.isSceneLoading(scenes, key)
+}

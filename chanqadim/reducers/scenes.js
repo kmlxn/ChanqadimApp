@@ -74,6 +74,10 @@ export function isCurrentSceneLoading (state) {
   return state.items[state.current].isFetching
 }
 
+export function isSceneLoading (state, key) {
+  return state.items[key].isFetching
+}
+
 export default combineReducers({
   current,
   items
