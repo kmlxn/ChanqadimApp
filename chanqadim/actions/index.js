@@ -90,6 +90,34 @@ export const fetchBundle = url => dispatch => {
   )
 }
 
+export const requestCurrentUser = url => ({
+  type: 'REQUEST_CURRENT_USER',
+  url
+})
+
+export const receiveCurrentUser = items => ({
+  type: 'RECEIVE_CURRENT_USER',
+  items
+})
+
+export const fetchCurrentUser = () => dispatch => {
+  dispatch(requestCurrentUser())
+
+  return wait().then(() =>
+    fetch(
+      'http://localhost:8000/users/current/',
+      { headers: { 'Authorization': `Token ${token}` } }
+    )
+    .then(
+      response => response.json(),
+      error => console.error('ERROR:', error))
+    .then(json => {
+      const normalizedJSON = normalize(json, schema.user)
+      dispatch(receiveCurrentUser(normalizedJSON))
+    })
+  )
+}
+
 function getAuthToken () {
   return AsyncStorage.getItem('@chanqadimv3:auth_token')
     .then(token_ => { token = token_ })

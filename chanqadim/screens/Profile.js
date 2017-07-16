@@ -1,13 +1,14 @@
-import React, { Component } from 'react'
-import { observer } from 'mobx-react/native'
+import React, { Component, PropTypes } from 'react'
 import { View, Text, TouchableOpacity,
-  StyleSheet, ListView, Image, Dimensions } from 'react-native'
+  StyleSheet, ListView, Image, Dimensions, ActivityIndicator } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { connect } from 'react-redux'
 
-import {goToProfileEdit} from '../navigation.js'
+import { goToProfileEdit } from '../navigation.js'
+import { fetchCurrentUser } from '../actions'
+import { getCurrentUserBundles, getCurrentUser, isCurrentSceneLoading } from '../reducers'
 import theme from '../theme'
 
-@observer
 class RenderRow extends Component {
   render () {
     return <View style={styles.bundle}>
@@ -20,14 +21,23 @@ class RenderRow extends Component {
   }
 }
 
-@observer
-export default class UserProfile extends Component {
+class UserProfile extends Component {
+  static propTypes = {
+    user: PropTypes.object,
+    isLoading: PropTypes.bool
+  }
+
+  constructor () {
+    super()
+    this.listDataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+  }
+
   renderRow (bundle, sectionID, rowID) {
     return <RenderRow bundle={bundle} />
   }
 
   componentDidMount () {
-    this.props.mobxStore.loadUser()
+    this.props.onDidMount()
   }
 
   renderHeader (user) {
@@ -42,17 +52,25 @@ export default class UserProfile extends Component {
     </View>
   }
 
-  render () {
-    const { user, userBundlesDataSource } = this.props.mobxStore
+  makeContent () {
+    if (this.props.isLoading) {
+      return <ActivityIndicator />
+    }
 
-    return <View style={styles.container}>
-      <ListView
-        enableEmptySections
-        renderHeader={() => this.renderHeader(user)}
-        contentContainerStyle={styles.bundles}
-        dataSource={userBundlesDataSource}
-        renderRow={this.renderRow.bind(this)}
+    const dataSource = this.listDataSource.cloneWithRows(this.props.bundles)
+
+    return <ListView
+      enableEmptySections
+      renderHeader={() => this.renderHeader(this.props.user)}
+      contentContainerStyle={styles.bundles}
+      dataSource={dataSource}
+      renderRow={this.renderRow.bind(this)}
       />
+  }
+
+  render () {
+    return <View style={styles.container}>
+      {this.makeContent()}
     </View>
   }
 
@@ -60,6 +78,22 @@ export default class UserProfile extends Component {
     goToProfileEdit(user)
   }
 }
+
+function mapStateToProps (state) {
+  return {
+    user: getCurrentUser(state),
+    isLoading: isCurrentSceneLoading(state),
+    bundles: getCurrentUserBundles(state)
+  }
+}
+
+const mapDispatchToProps = (dispatch) => ({
+  onDidMount (id) {
+    dispatch(fetchCurrentUser())
+  }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile)
 
 const styles = StyleSheet.create({
   container: {

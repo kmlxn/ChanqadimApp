@@ -16,3 +16,10 @@ export const category = new schema.Entity(
   { idAttribute: 'url' }
 )
 export const categories = new schema.Array(category)
+
+export const user = new schema.Entity(
+  'users',
+  { bundles },
+  { idAttribute: 'url' }
+)
+export const users = new schema.Array(user)
