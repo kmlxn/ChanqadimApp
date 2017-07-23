@@ -26,9 +26,9 @@ export default class EditProfile extends Component {
 
     if (this.state.image) {
       if (this.state.image.uri) {
-        image = <Image source={this.state.image} style={{width: 80, height: 80}} />
+        image = <Image source={this.state.image} style={styles.avatar} />
       } else {
-        image = <Image source={{uri: this.state.image}} style={{width: 80, height: 80}} />
+        image = <Image source={{uri: this.state.image}} style={styles.avatar} />
       }
     } else {
       image = <Text>Image</Text>
@@ -38,19 +38,31 @@ export default class EditProfile extends Component {
       {this.state.isSpinnerDisplayed && <ActivityIndicator />}
       {this.state.isValidationErrorDisplayed && <Text>Invalid input</Text>}
 
-      <TouchableOpacity onPress={() => this.onImageClick()}>
+      <TouchableOpacity style={styles.avatarContainer} onPress={() => this.onImageClick()}>
         {image}
       </TouchableOpacity>
 
-      <Text>Old password</Text>
-      <TextInput secureTextEntry onChangeText={password => this.setState({password})} />
-      <Text>New password</Text>
-      <TextInput secureTextEntry onChangeText={newPassword => this.setState({newPassword})} />
-      <Text>Repeat new password</Text>
-      <TextInput secureTextEntry onChangeText={newPasswordRepeated => this.setState({newPasswordRepeated})} />
+      <TextInput
+        placeholder='Old password'
+        underlineColorAndroid={theme.textInputBottomColor}
+        secureTextEntry
+        onChangeText={password => this.setState({password})}
+      />
+      <TextInput
+        placeholder='New password'
+        underlineColorAndroid={theme.textInputBottomColor}
+        secureTextEntry
+        onChangeText={newPassword => this.setState({newPassword})}
+      />
+      <TextInput
+        placeholder='Repeat new password'
+        underlineColorAndroid={theme.textInputBottomColor}
+        secureTextEntry
+        onChangeText={newPasswordRepeated => this.setState({newPasswordRepeated})}
+      />
 
-      <TouchableOpacity disabled={this.state.isSubmitButtonDisabled} onPress={() => this.onSubmit()}>
-        <Icon name='save' size={30} color={theme.accentColor} />
+      <TouchableOpacity style={styles.fab} disabled={this.state.isSubmitButtonDisabled} onPress={() => this.onSubmit()}>
+        <Icon name='save' size={30} color='white' />
       </TouchableOpacity>
     </View>
   }
@@ -120,19 +132,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',
-    marginTop: 55
+    marginTop: 55,
+    padding: 5
   },
-  bundle: {
+  avatar: {
+    borderRadius: 999,
+    width: 80,
+    height: 80
+  },
+  avatarContainer: {
+    borderRadius: 999,
+    elevation: 6,
+    width: 80,
+    alignSelf: 'center',
     flexDirection: 'row',
-    alignSelf: 'stretch',
-    flex: 1,
-    borderBottomWidth: 1,
-    alignItems: 'center'
+    justifyContent: 'center'
   },
-  switch: {
-    flex: 1,
-    borderBottomWidth: 1,
-    padding: 5,
-    marginBottom: 20
+  fab: {
+    elevation: 6,
+    backgroundColor: theme.accentColor,
+    height: 56,
+    width: 56,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 58,
+    right: 10
   }
 })
