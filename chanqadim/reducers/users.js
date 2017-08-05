@@ -1,4 +1,6 @@
 import union from 'lodash/union'
+import mapValues from 'lodash/mapValues'
+
 import { combineReducers } from 'redux'
 
 function allIds (state = {}, action) {
@@ -14,9 +16,11 @@ function byId (state = {}, action) {
   switch (action.type) {
     case 'RECEIVE_CURRENT_USER':
       return {
-        ...state.byId,
+        ...state,
         ...action.items.entities.users
       }
+    case 'RECEIVE_UPDATE_CURRENT_USER':
+      return mapValues(state, value => user(value, action))
   }
 
   return state
@@ -24,6 +28,19 @@ function byId (state = {}, action) {
 
 function current (state = 'http://localhost:8000/users/1/', action) {
   return state
+}
+
+function user (state = {}, action) {
+  switch (action.type) {
+    case 'RECEIVE_UPDATE_CURRENT_USER':
+      if (!(state.url in action.items.entities.users)) {
+        return state
+      }
+
+      const newState = action.items.entities.users[state.url]
+
+      return {...state, ...newState}
+  }
 }
 
 export function getCurrentUserUrl (state) {

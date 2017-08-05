@@ -19,8 +19,7 @@ export default function openImage () {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton)
       } else {
-        const image = {uri: response.uri, isStatic: true, name: 'image.jpg', type: 'image/jpg'}
-        resolve(image)
+        resolve(response.uri)
       }
     })
   })

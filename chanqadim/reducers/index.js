@@ -58,3 +58,7 @@ export function isCurrentSceneLoading ({ scenes }) {
 export function isSceneLoading ({ scenes }, key) {
   return fromScenes.isSceneLoading(scenes, key)
 }
+
+export function wasUpdateSuccessful ({ scenes }, key) {
+  return fromScenes.wasUpdateSuccessful(scenes, key)
+}

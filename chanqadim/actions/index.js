@@ -1,13 +1,34 @@
 import { AsyncStorage } from 'react-native'
 import { normalize } from 'normalizr'
 import * as schema from '../schema'
-
 let token = ''
 
 getAuthToken()
 
 function wait () {
   return new Promise(resolve => setTimeout(resolve, 500))
+}
+
+function fetchJSON (url) {
+  return wait().then(() => fetch(url, {
+    headers: { 'Authorization': `Token ${token}` }
+  }))
+}
+
+function postJSON (url, data) {
+  const formdata = new FormData()
+  for (let key in data) { formdata.append(key, data[key]) }
+
+  return wait().then(() => fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d',
+      'Authorization': `Token ${token}`,
+      'Content-Disposition': 'attachment; filename=image.jpg'
+    },
+    method: 'POST',
+    body: formdata
+  }))
 }
 
 export const requestCategories = () => ({
@@ -41,10 +62,7 @@ export const receiveBundle = bundle => ({
 
 export const fetchCategories = () => dispatch => {
   dispatch(requestCategories())
-  return fetch(
-      'http://localhost:8000/categories/',
-      { headers: { 'Authorization': `Token ${token}` } }
-    )
+  return fetchJSON('http://localhost:8000/categories/')
     .then(
       response => response.json(),
       error => console.error('ERROR:', error))
@@ -57,11 +75,7 @@ export const fetchCategories = () => dispatch => {
 export const fetchCategory = (url) => dispatch => {
   dispatch(requestCategory(url))
 
-  return wait().then(() =>
-    fetch(
-      url,
-      { headers: { 'Authorization': `Token ${token}` } }
-    )
+  return fetchJSON(url)
     .then(
       response => response.json(),
       error => console.error('ERROR:', error))
@@ -69,17 +83,12 @@ export const fetchCategory = (url) => dispatch => {
       const normalizedJSON = normalize(json, schema.category)
       dispatch(recieveCategory(normalizedJSON))
     })
-  )
 }
 
 export const fetchBundle = url => dispatch => {
   dispatch(requestBundle(url))
 
-  return wait().then(() =>
-    fetch(
-      url,
-      { headers: { 'Authorization': `Token ${token}` } }
-    )
+  return fetchJSON(url)
     .then(
       response => response.json(),
       error => console.error('ERROR:', error))
@@ -87,7 +96,6 @@ export const fetchBundle = url => dispatch => {
       const normalizedJSON = normalize(json, schema.bundle)
       dispatch(receiveBundle(normalizedJSON))
     })
-  )
 }
 
 export const requestCurrentUser = url => ({
@@ -103,11 +111,7 @@ export const receiveCurrentUser = items => ({
 export const fetchCurrentUser = () => dispatch => {
   dispatch(requestCurrentUser())
 
-  return wait().then(() =>
-    fetch(
-      'http://localhost:8000/users/current/',
-      { headers: { 'Authorization': `Token ${token}` } }
-    )
+  return fetchJSON('http://localhost:8000/users/current/')
     .then(
       response => response.json(),
       error => console.error('ERROR:', error))
@@ -115,7 +119,29 @@ export const fetchCurrentUser = () => dispatch => {
       const normalizedJSON = normalize(json, schema.user)
       dispatch(receiveCurrentUser(normalizedJSON))
     })
-  )
+}
+
+export const requestUpdateCurrentUser = () => ({
+  type: 'REQUEST_UPDATE_CURRENT_USER'
+})
+
+export const receiveUpdateCurrentUser = items => ({
+  type: 'RECEIVE_UPDATE_CURRENT_USER',
+  items
+})
+
+export const updateCurrentUser = data => dispatch => {
+  dispatch(requestUpdateCurrentUser())
+
+  return postJSON('http://localhost:8000/users/current/edit/', data)
+    .then(
+      response => response.json(),
+      error => console.error('ERROR:', error))
+    .then(json => {
+      // json.bundles = []
+      const normalizedJSON = normalize(json, schema.user)
+      dispatch(receiveUpdateCurrentUser(normalizedJSON))
+    })
 }
 
 function getAuthToken () {

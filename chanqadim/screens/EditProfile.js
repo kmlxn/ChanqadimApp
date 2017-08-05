@@ -1,45 +1,32 @@
 import React, { Component } from 'react'
-import { observer } from 'mobx-react/native'
 import { View, Text, StyleSheet, Image,
-  TouchableOpacity, TextInput, ActivityIndicator } from 'react-native'
+  TouchableOpacity, TextInput } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { connect } from 'react-redux'
 
+import { updateCurrentUser } from '../actions'
+import { getCurrentUser, wasUpdateSuccessful, isSceneLoading } from '../reducers'
 import openImage from '../imagePicker'
 import theme from '../theme'
+import InvalidInput from '../blocks/InvalidInput'
+import UpdateSuccessful from '../blocks/UpdateSuccessful'
+import Loading from '../blocks/Loading'
 
-@observer
-export default class EditProfile extends Component {
-  componentWillMount () {
-    this.setState({
-      image: this.props.user && this.props.user.image
-    })
-  }
-
-  componentWillReceiveProps (newProps) {
-    this.setState({
-      image: newProps.user && newProps.user.image
-    })
+class EditProfile extends Component {
+  constructor () {
+    super()
+    this.state = {}
   }
 
   render () {
-    let image
-
-    if (this.state.image) {
-      if (this.state.image.uri) {
-        image = <Image source={this.state.image} style={styles.avatar} />
-      } else {
-        image = <Image source={{uri: this.state.image}} style={styles.avatar} />
-      }
-    } else {
-      image = <Text>Image</Text>
-    }
+    const imageUri = this.state.image || this.props.user.image
+    const picture = imageUri
+      ? <Image source={{uri: imageUri}} style={styles.avatar} />
+      : <Text>Image</Text>
 
     return <View style={styles.container}>
-      {this.state.isSpinnerDisplayed && <ActivityIndicator />}
-      {this.state.isValidationErrorDisplayed && <Text>Invalid input</Text>}
-
       <TouchableOpacity style={styles.avatarContainer} onPress={() => this.onImageClick()}>
-        {image}
+        {picture}
       </TouchableOpacity>
 
       <TextInput
@@ -61,6 +48,10 @@ export default class EditProfile extends Component {
         onChangeText={newPasswordRepeated => this.setState({newPasswordRepeated})}
       />
 
+      {this.props.isLoading && <Loading />}
+      {this.state.isValidationErrorDisplayed && <InvalidInput />}
+      {this.props.wasUpdateSuccessful && <UpdateSuccessful />}
+
       <TouchableOpacity style={styles.fab} disabled={this.state.isSubmitButtonDisabled} onPress={() => this.onSubmit()}>
         <Icon name='save' size={30} color='white' />
       </TouchableOpacity>
@@ -72,54 +63,28 @@ export default class EditProfile extends Component {
       this.state.newPassword === this.state.newPasswordRepeated
   }
 
-  async onSubmit () {
-    this.disableSubmitButton()
-
-    if (this.areInputsValid()) {
-      this.displaySpinner()
-
-      const status = await this.save()
-
-      this.hideSpinner()
-
-      if (status === 'wrong password') { this.displayValidationError() }
+  onSubmit () {
+    if (this.areInputsValid() && !this.props.isLoading) {
+      this.save()
     } else {
       this.displayValidationError()
     }
-
-    this.enableSubmitButton()
   }
 
-  async save () {
+  save () {
     let data = {}
 
-    if (this.state.image) { data.image = {...this.state.image} }
+    if (this.state.image) { data.image = {uri: this.state.image, isStatic: true, name: 'image.jpg', type: 'image/jpg'} }
     if (this.state.password) { data.password = this.state.password }
     if (this.state.newPassword) { data.newPassword = this.state.newPassword }
 
     data.username = 'kmlxn'
 
-    return await this.props.mobxStore.uploadUserInfo(data)
-  }
-
-  displaySpinner () {
-    this.setState({isSpinnerDisplayed: true})
-  }
-
-  hideSpinner () {
-    this.setState({isSpinnerDisplayed: false})
+    this.props.save(data)
   }
 
   displayValidationError () {
     this.setState({isValidationErrorDisplayed: true})
-  }
-
-  disableSubmitButton () {
-    this.setState({isSubmitButtonDisabled: true})
-  }
-
-  enableSubmitButton () {
-    this.setState({isSubmitButtonDisabled: false})
   }
 
   async onImageClick () {
@@ -127,6 +92,24 @@ export default class EditProfile extends Component {
     this.setState({image})
   }
 }
+
+function mapStateToProps (state) {
+  return {
+    user: getCurrentUser(state),
+    wasUpdateSuccessful: wasUpdateSuccessful(state, 'editProfile'),
+    isLoading: isSceneLoading(state, 'editProfile')
+  }
+}
+
+function mapDispatchToProps (dispatch) {
+  return {
+    save (data) {
+      dispatch(updateCurrentUser(data))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile)
 
 const styles = StyleSheet.create({
   container: {

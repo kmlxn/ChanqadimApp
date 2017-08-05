@@ -5,7 +5,7 @@ const scenesInitialState = {
   category: { isFetching: true },
   bundle: { isFetching: true },
   profile: { isFetching: true },
-  editProfile: { isFetching: true },
+  editProfile: { isFetching: false },
   login: { isFetching: true },
   add: { isFetching: true }
 }
@@ -42,6 +42,16 @@ function items (state = scenesInitialState, action) {
         ...state,
         profile: { isFetching: true }
       }
+    case 'REQUEST_UPDATE_CURRENT_USER':
+      return {
+        ...state,
+        editProfile: { isFetching: true }
+      }
+    case 'RECEIVE_UPDATE_CURRENT_USER':
+      return {
+        ...state,
+        editProfile: { wasUpdateSuccessful: true, isFetching: false }
+      }
   }
 
   return state
@@ -76,6 +86,10 @@ export function isCurrentSceneLoading (state) {
 
 export function isSceneLoading (state, key) {
   return state.items[key].isFetching
+}
+
+export function wasUpdateSuccessful (state, key) {
+  return state.items[key].wasUpdateSuccessful
 }
 
 export default combineReducers({
