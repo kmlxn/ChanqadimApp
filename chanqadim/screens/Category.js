@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet, ListView, Image, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 
@@ -20,12 +20,6 @@ class RenderRow extends Component {
 }
 
 class Category extends Component {
-  static propTypes = {
-    scenes: PropTypes.object,
-    categories: PropTypes.object,
-    bundles: PropTypes.array
-  }
-
   constructor () {
     super()
     this.listDataSource = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
@@ -65,8 +59,6 @@ class Category extends Component {
 
 const mapStateToProps = state => ({
   bundles: getActiveCategoryBundles(state),
-  categories: state.categories,
-  scenes: state.scenes,
   isLoading: isSceneLoading(state, 'category')
 })
 

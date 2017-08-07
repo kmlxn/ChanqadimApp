@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { View, Text, StyleSheet, ListView, Image, Dimensions, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 
-import { getProducts } from '../reducers/products'
-import { getCurrentSceneItemUrl, isCurrentSceneLoading, getBundle } from '../reducers'
+import { isSceneLoading, getActiveBundle, getActiveBundleProducts } from '../reducers'
 
 class RenderRow extends Component {
   render () {
@@ -76,13 +75,11 @@ class Bundle extends Component {
   }
 }
 
-const mapStateToProps = state => {
-  const bundleUrl = getCurrentSceneItemUrl(state)
-
+function mapStateToProps (state) {
   return {
-    products: getProducts(state, bundleUrl),
-    isLoading: isCurrentSceneLoading(state),
-    bundle: getBundle(state.bundles, bundleUrl)
+    products: getActiveBundleProducts(state),
+    isLoading: isSceneLoading(state, 'bundle'),
+    bundle: getActiveBundle(state)
   }
 }
 

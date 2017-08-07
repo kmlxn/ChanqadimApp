@@ -13,11 +13,6 @@ export default function products (state = {}, action) {
   }
 }
 
-export function getProducts ({bundles, products}, bundleUrl) {
-  const productIds = bundles.byId[bundleUrl] && bundles.byId[bundleUrl].products
-  return productIds ? productIds.map(url => products.byId[url]) : []
-}
-
 function byId (state = {}, action) {
   if (action.items.entities.products) {
     return {
@@ -35,4 +30,8 @@ function allIds (state = [], action) {
   }
 
   return state
+}
+
+export function getProducts (state, ids) {
+  return ids.map(id => state.byId[id])
 }

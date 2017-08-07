@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import products from './products'
+import products, * as fromProducts from './products'
 import users, * as fromUsers from './users'
 import bundles, * as fromBundles from './bundles'
 import scenes, * as fromScenes from './scenes'
@@ -25,12 +25,21 @@ export function getCurrentUser ({ users }) {
   return fromUsers.getCurrentUser(users)
 }
 
-export function isCurrentSceneLoading ({ scenes }) {
-  return fromScenes.isCurrentSceneLoading(scenes)
-}
-
 export function isSceneLoading ({ scenes }, key) {
   return fromScenes.isSceneLoading(scenes, key)
+}
+
+export function getActiveBundle ({ scenes, bundles, products }) {
+  const bundleUrl = fromScenes.getSceneItemUrl(scenes, 'bundle')
+  return fromBundles.getBundle(bundles, bundleUrl)
+}
+
+export function getActiveBundleProducts ({scenes, bundles, products}) {
+  const bundleUrl = fromScenes.getSceneItemUrl(scenes, 'bundle')
+  const productsIds = fromBundles.getBundleProductsIds(bundles, bundleUrl)
+  const bundleProducts = fromProducts.getProducts(products, productsIds)
+
+  return bundleProducts
 }
 
 export function wasUpdateSuccessful ({ scenes }, key) {

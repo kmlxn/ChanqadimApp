@@ -76,12 +76,8 @@ function current (state = 'categories', action) {
   return state
 }
 
-export function getCurrentSceneItemUrl ({ scenes }) {
-  return scenes.items[scenes.current].url
-}
-
-export function isCurrentSceneLoading (state) {
-  return state.items[state.current].isFetching
+export function getSceneItemUrl (state, scene) {
+  return state.items[scene].url
 }
 
 export function isSceneLoading (state, key) {

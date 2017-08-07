@@ -27,10 +27,6 @@ export default function bundles (state = {}, action) {
   }
 }
 
-export function getBundle (bundles, url) {
-  return bundles.byId[url]
-}
-
 function bundlesById (state = {}, action) {
   if (action.items.entities.bundles) {
     return {
@@ -50,6 +46,14 @@ function bundlesAllIds (state = [], action) {
   return state
 }
 
-export function getBundles (bundles, ids) {
-  return ids.map(id => bundles.byId[id])
+export function getBundle (state, url) {
+  return state.byId[url]
+}
+
+export function getBundleProductsIds (state, url) {
+  return state.byId[url].products || []
+}
+
+export function getBundles (state, ids) {
+  return ids.map(id => state.byId[id])
 }
