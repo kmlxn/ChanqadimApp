@@ -92,6 +92,10 @@ export function wasUpdateSuccessful (state, key) {
   return state.items[key].wasUpdateSuccessful
 }
 
+export function getActiveCategoryUrl (state) {
+  return state.items.category.url
+}
+
 export default combineReducers({
   current,
   items

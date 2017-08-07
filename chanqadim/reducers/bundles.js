@@ -31,13 +31,6 @@ export function getBundle (bundles, url) {
   return bundles.byId[url]
 }
 
-export function getActiveCategoryBundles ({bundles, categories, scenes}) {
-  const activeCategoryUrl = scenes.category.url
-  const activeCategory = categories.byId[activeCategoryUrl]
-
-  return activeCategory && activeCategory.bundles && activeCategory.bundles.map(id => bundles.byId[id])
-}
-
 function bundlesById (state = {}, action) {
   if (action.items.entities.bundles) {
     return {
@@ -57,5 +50,6 @@ function bundlesAllIds (state = [], action) {
   return state
 }
 
-export const getBundles = (bundles, ids) =>
-  ids.map(id => bundles.byId[id])
+export function getBundles (bundles, ids) {
+  return ids.map(id => bundles.byId[id])
+}

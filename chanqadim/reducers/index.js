@@ -1,36 +1,10 @@
-import union from 'lodash/union'
 import { combineReducers } from 'redux'
 
 import products from './products'
 import users, * as fromUsers from './users'
-import bundles, { getBundles } from './bundles'
+import bundles, * as fromBundles from './bundles'
 import scenes, * as fromScenes from './scenes'
-
-function categories (state = {}, action) {
-  switch (action.type) {
-    case 'REQUEST_CATEGORIES':
-      return { ...state, isFetching: true }
-
-    case 'RECEIVE_CATEGORIES':
-      return {
-        byId: action.items.entities.categories,
-        allIds: action.items.result,
-        isFetching: false
-      }
-
-    case 'REQUEST_CATEGORY':
-      return state
-
-    case 'RECEIVE_CATEGORY':
-      return {
-        byId: {...state.byId, ...action.items.entities.categories},
-        allIds: union(state.allIds, [action.items.result])
-      }
-
-    default:
-      return state
-  }
-}
+import categories, * as fromCategories from './categories'
 
 const reducers = combineReducers({
   categories,
@@ -44,7 +18,7 @@ export default reducers
 
 export function getCurrentUserBundles ({ bundles, users }) {
   const bundlesIds = fromUsers.getCurrentUserBundlesIds(users)
-  return getBundles(bundles, bundlesIds)
+  return fromBundles.getBundles(bundles, bundlesIds)
 }
 
 export function getCurrentUser ({ users }) {
@@ -61,4 +35,10 @@ export function isSceneLoading ({ scenes }, key) {
 
 export function wasUpdateSuccessful ({ scenes }, key) {
   return fromScenes.wasUpdateSuccessful(scenes, key)
+}
+
+export function getActiveCategoryBundles ({ bundles, categories, scenes }) {
+  const activeCategoryBundlesIds = fromCategories.getCategoryBundlesIds(categories, fromScenes.getActiveCategoryUrl(scenes))
+
+  return activeCategoryBundlesIds ? fromBundles.getBundles(bundles, activeCategoryBundlesIds) : []
 }

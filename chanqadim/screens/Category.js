@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ListView, Image, ActivityIndi
 import { connect } from 'react-redux'
 
 import { goToBundle } from '../navigation'
-import { getActiveCategoryBundles } from '../reducers'
+import { getActiveCategoryBundles, isSceneLoading } from '../reducers'
 import { fetchBundle } from '../actions'
 import theme from '../theme'
 
@@ -41,7 +41,7 @@ class Category extends Component {
   }
 
   makeContent () {
-    if (this.props.scenes.category.isFetching) {
+    if (this.props.isLoading) {
       return <ActivityIndicator />
     } else {
       const dataSource = this.listDataSource.cloneWithRows(this.props.bundles)
@@ -66,7 +66,8 @@ class Category extends Component {
 const mapStateToProps = state => ({
   bundles: getActiveCategoryBundles(state),
   categories: state.categories,
-  scenes: state.scenes
+  scenes: state.scenes,
+  isLoading: isSceneLoading(state, 'category')
 })
 
 export default connect(mapStateToProps)(Category)
