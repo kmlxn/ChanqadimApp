@@ -26,7 +26,12 @@ function byId (state = {}, action) {
   return state
 }
 
-function current (state = 'http://localhost:8000/users/1/', action) {
+function current (state = null, action) {
+  switch (action.type) {
+    case 'RECEIVE_CURRENT_USER':
+      return action.items.result
+  }
+
   return state
 }
 
@@ -48,12 +53,18 @@ export function getCurrentUserUrl (state) {
 }
 
 export function getCurrentUser (state) {
-  return state.byId[state.current]
+  return state.current ? state.byId[state.current] : {}
 }
 
 export function getCurrentUserBundlesIds (state) {
   const user = getCurrentUser(state)
-  return user ? user.bundles : []
+  const bundlesIds = user && user.bundles
+
+  return bundlesIds || []
+}
+
+export function getSignInStatus (state) {
+  return !!state.current
 }
 
 export default combineReducers({

@@ -1,5 +1,8 @@
-import React from 'react'
-import { Scene, Actions } from 'react-native-router-flux'
+import React, { Component } from 'react'
+import { Scene, Actions, Router } from 'react-native-router-flux'
+import { connect } from 'react-redux'
+import { StyleSheet } from 'react-native'
+
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import store from './store'
@@ -12,7 +15,7 @@ import Login from './screens/Login'
 import Add from './screens/Add'
 import theme from './theme'
 
-export const Scenes = Actions.create(
+const Scenes = Actions.create(
   <Scene key='root'>
     <Scene tabs key='main' tabBarStyle={{backgroundColor: 'white', elevation: 8}}
       tabBarSelectedItemStyle={{borderTopWidth: 2, borderTopColor: theme.accentColor}}
@@ -31,3 +34,22 @@ export const Scenes = Actions.create(
     <Scene key='login' component={Login} title='Login' mobxStore={store} />
   </Scene>
 )
+
+const ConnectedRouter = connect()(Router)
+
+export default class RouterWrapper extends Component {
+  render () {
+    return <ConnectedRouter navigationBarStyle={styles.navBar} titleStyle={styles.navTitle} scenes={Scenes} />
+  }
+}
+
+const styles = StyleSheet.create({
+  navBar: {
+    backgroundColor: theme.mainColor,
+    borderBottomWidth: 0,
+    elevation: 2
+  },
+  navTitle: {
+    color: 'white'
+  }
+})

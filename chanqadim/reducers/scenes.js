@@ -6,7 +6,7 @@ const scenesInitialState = {
   bundle: { isFetching: true },
   profile: { isFetching: true },
   editProfile: { isFetching: false },
-  login: { isFetching: true },
+  login: { isFetching: false },
   add: { isFetching: true }
 }
 
@@ -52,6 +52,16 @@ function items (state = scenesInitialState, action) {
         ...state,
         editProfile: { wasUpdateSuccessful: true, isFetching: false }
       }
+    case 'REQUEST_LOGIN':
+      return {
+        ...state,
+        login: { isFetching: true }
+      }
+    case 'LOGIN_ERROR_RESPONSE':
+      return {
+        ...state,
+        login: { hasErrorHappened: true }
+      }
   }
 
   return state
@@ -82,6 +92,10 @@ export function getSceneItemUrl (state, scene) {
 
 export function isSceneLoading (state, key) {
   return state.items[key].isFetching
+}
+
+export function hasErrorHappened (state, key) {
+  return state.items[key].hasErrorHappened
 }
 
 export function wasUpdateSuccessful (state, key) {

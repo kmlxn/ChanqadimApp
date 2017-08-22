@@ -5,13 +5,15 @@ import users, * as fromUsers from './users'
 import bundles, * as fromBundles from './bundles'
 import scenes, * as fromScenes from './scenes'
 import categories, * as fromCategories from './categories'
+import status, * as fromStatus from './status'
 
 const reducers = combineReducers({
   categories,
   bundles,
   products,
   scenes,
-  users
+  users,
+  status
 })
 
 export default reducers
@@ -27,6 +29,10 @@ export function getCurrentUser ({ users }) {
 
 export function isSceneLoading ({ scenes }, key) {
   return fromScenes.isSceneLoading(scenes, key)
+}
+
+export function hasErrorHappened ({ scenes }, key) {
+  return fromScenes.hasErrorHappened(scenes, key)
 }
 
 export function getActiveBundle ({ scenes, bundles, products }) {
@@ -50,4 +56,12 @@ export function getActiveCategoryBundles ({ bundles, categories, scenes }) {
   const activeCategoryBundlesIds = fromCategories.getCategoryBundlesIds(categories, fromScenes.getActiveCategoryUrl(scenes))
 
   return activeCategoryBundlesIds ? fromBundles.getBundles(bundles, activeCategoryBundlesIds) : []
+}
+
+export function getSignInStatus ({ status }) {
+  return fromStatus.getSignInStatus(status)
+}
+
+export function getBootingUpStatus ({ status }) {
+  return fromStatus.getBootingUpStatus(status)
 }
